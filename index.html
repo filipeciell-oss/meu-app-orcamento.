@@ -2,380 +2,170 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="no-referrer">
-<!-- CSP Reforçada: Bloqueia injeções e garante que scripts venham apenas de fontes confiáveis -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://accounts.google.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.googleusercontent.com; connect-src 'self' https://www.googleapis.com https://accounts.google.com https://automacoes-n8n.nwxz0i.easypanel.host; frame-src https://accounts.google.com; object-src 'none';">
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
 
-<title>Notas$fácil — Gestão para Autônomos</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Mono&display=swap" rel="stylesheet">
+<title>Notas$fácil — Nota de Serviço para Autônomos</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00C896">
+
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --primary: #00E676;
-  --primary-dark: #00C853;
-  --bg: #05070A;
-  --card-bg: #11141A;
-  --text: #FFFFFF;
-  --text-dim: #94A3B8;
-  --border: rgba(255, 255, 255, 0.08);
-  --accent: #2979FF;
-  --radius: 16px;
-  --safe-area-bottom: env(safe-area-inset-bottom);
+:root{
+--verde:#00C896;
+--preto:#0D1117;
+--cinza:#8899AA;
+--radius:14px;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-body {
-  font-family: 'Sora', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.5;
-  overflow-x: hidden;
-  user-select: none; /* Evita cópia acidental em mobile */
+body{
+margin:0;
+font-family:'Sora',sans-serif;
+background:var(--preto);
+color:white;
 }
 
-/* Scrollbar estilizada */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-
-/* LAYOUT MOBILE-FIRST */
-nav {
-  position: fixed;
-  top: 0; width: 100%;
-  height: 64px;
-  background: rgba(5, 7, 10, 0.8);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  z-index: 1000;
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px;
+background:#0d1117;
+border-bottom:1px solid rgba(255,255,255,0.05);
 }
 
-.logo { font-weight: 700; font-size: 20px; color: var(--primary); letter-spacing: -1px; }
-.logo span { color: var(--text); }
-
-/* BOTTOM NAVIGATION (Mobile Only) */
-.bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  height: calc(65px + var(--safe-area-bottom));
-  background: rgba(17, 20, 26, 0.95);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid var(--border);
-  display: none; /* Hidden on desktop */
-  grid-template-columns: repeat(5, 1fr);
-  padding-bottom: var(--safe-area-bottom);
-  z-index: 1000;
+.logo{
+font-weight:700;
+color:var(--verde);
 }
 
-.nav-item {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  color: var(--text-dim);
-  font-size: 10px;
-  text-decoration: none;
-  transition: 0.2s;
+.btn-primary{
+background:var(--verde);
+border:none;
+padding:10px 18px;
+border-radius:8px;
+font-weight:600;
+cursor:pointer;
 }
 
-.nav-item.active { color: var(--primary); }
-.nav-item i { font-size: 20px; margin-bottom: 4px; }
-
-/* SIDEBAR (Desktop Only) */
-.app-layout { display: flex; min-height: 100vh; padding-top: 64px; }
-.sidebar {
-  width: 260px;
-  background: var(--card-bg);
-  border-right: 1px solid var(--border);
-  padding: 20px;
-  position: fixed;
-  height: 100vh;
-  display: flex; flex-direction: column;
-  gap: 8px;
+.hero{
+padding:120px 20px 60px;
+text-align:center;
+max-width:900px;
+margin:auto;
 }
 
-.main-content {
-  flex: 1;
-  margin-left: 260px;
-  padding: 32px;
-  padding-bottom: 100px;
+.hero h1{
+font-size:42px;
+margin-bottom:20px;
 }
 
-/* BUTTONS */
-.btn {
-  padding: 14px 24px;
-  border-radius: var(--radius);
-  border: none;
-  font-family: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+.hero p{
+color:var(--cinza);
+max-width:600px;
+margin:auto;
 }
 
-.btn-primary { background: var(--primary); color: #000; }
-.btn-primary:active { transform: scale(0.96); opacity: 0.9; }
-
-.btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
-.btn-ghost:hover { background: var(--border); }
-
-/* CARDS */
-.card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px;
-  margin-bottom: 20px;
+.btn-hero{
+margin-top:30px;
+padding:16px 28px;
+font-size:16px;
+border:none;
+border-radius:var(--radius);
+background:var(--verde);
+cursor:pointer;
+font-weight:700;
 }
 
-/* FORM STYLES */
-.form-group { margin-bottom: 16px; }
-.form-group label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 6px; font-weight: 600; }
-.form-group input, .form-group select, .form-group textarea {
-  width: 100%;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 16px;
-  color: #fff;
-  font-family: inherit;
-  outline: none;
-  transition: 0.2s;
-}
-.form-group input:focus { border-color: var(--primary); background: rgba(0,230,118,0.05); }
-
-/* ONBOARDING / HELP */
-.help-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-.help-card { background: rgba(41, 121, 255, 0.05); border: 1px solid rgba(41, 121, 255, 0.2); padding: 20px; border-radius: var(--radius); }
-.help-card h4 { color: var(--accent); margin-bottom: 8px; }
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .sidebar { display: none; }
-  .bottom-nav { display: grid; }
-  .main-content { margin-left: 0; padding: 20px; }
-  .nav-actions { display: none; }
-  .hero h1 { font-size: 32px; }
+.section{
+padding:80px 20px;
+max-width:1000px;
+margin:auto;
 }
 
-/* PAGES */
-.page { display: none; animation: fadeIn 0.3s ease; }
-.page.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.mobile-nav{
+display:none;
+}
 
-/* SECURITY OVERLAY (For "Exposed" pages) */
-#lock-screen {
-    position: fixed; inset: 0; background: var(--bg); z-index: 2000;
-    display: flex; align-items: center; justify-content: center;
+@media(max-width:768px){
+.mobile-nav{
+display:flex;
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:#111;
+border-top:1px solid rgba(255,255,255,0.08);
+justify-content:space-around;
+padding:8px 0;
+z-index:999;
+}
+
+.mobile-nav button{
+background:none;
+border:none;
+color:white;
+font-size:22px;
+}
+
+body{
+padding-bottom:70px;
+}
 }
 </style>
 </head>
+
 <body>
 
 <nav>
-  <div class="logo">Notas<span>$</span>fácil</div>
-  <div class="nav-actions">
-    <button class="btn btn-ghost" data-action="go-home">Início</button>
-    <button class="btn btn-primary" data-action="unlock-app">Entrar no App</button>
-  </div>
+<div class="logo">Notas$fácil</div>
+<button class="btn-primary" data-action="abrir-app">
+🔐 Acessar Minhas Notas
+</button>
 </nav>
 
-<!-- LANDING PAGE -->
-<div id="page-landing" class="page active">
-  <section style="padding: 120px 20px 60px; text-align: center; max-width: 800px; margin: 0 auto;">
-    <div style="background: rgba(0,230,118,0.1); color: var(--primary); padding: 6px 16px; border-radius: 20px; display: inline-block; font-size: 12px; font-weight: 700; margin-bottom: 20px;">
-      NOVO: BACKUP EM NUVEM AUTOMÁTICO
-    </div>
-    <h1 style="font-size: 48px; font-weight: 800; line-height: 1.1; margin-bottom: 24px;">
-      Notas de serviço para autônomos <span style="color: var(--primary);">sem burocracia.</span>
-    </h1>
-    <p style="color: var(--text-dim); font-size: 18px; margin-bottom: 40px;">
-      Emita, calcule impostos e organize seus recebimentos em segundos. Tudo criptografado e seguro.
-    </p>
-    <button class="btn btn-primary" style="padding: 18px 40px; font-size: 18px;" data-action="unlock-app">Começar Agora — Grátis</button>
-    <p style="margin-top: 20px; font-size: 13px; color: var(--text-dim);">R$ 15,99/mês após 2 dias de teste. Cancele quando quiser.</p>
-  </section>
+<div class="hero">
+<h1>Sua nota de serviço em segundos.</h1>
+<p>Emita notas profissionais, calcule impostos automaticamente e organize suas finanças.</p>
+
+<button class="btn-hero" data-action="abrir-app">
+🚀 Criar minha primeira nota grátis
+</button>
+
+<p style="margin-top:16px;color:var(--cinza);font-size:14px">
+✅ Mais de 1.000 notas já emitidas por autônomos
+</p>
 </div>
 
-<!-- LOCK SCREEN (SECURITY FIRST) -->
-<div id="page-lock" class="page">
-    <div style="max-width: 360px; width: 100%; margin: 100px auto; padding: 20px; text-align: center;">
-        <div style="font-size: 50px; margin-bottom: 20px;">🛡️</div>
-        <h2 id="lock-title">Acesse seu Cofre</h2>
-        <p style="color: var(--text-dim); margin-bottom: 30px;">Seus dados são protegidos por criptografia de ponta-a-ponta.</p>
-        
-        <div id="setup-area" style="display:none">
-            <input type="password" id="pin-create" class="btn-ghost" style="width:100%; text-align:center; font-size:24px; letter-spacing:8px; margin-bottom:12px" placeholder="CRIE UM PIN" inputmode="numeric" maxlength="6">
-            <button class="btn btn-primary" style="width:100%" data-action="setup-vault">Configurar Acesso</button>
-        </div>
+<!-- APP ROOT -->
+<div id="app"></div>
 
-        <div id="unlock-area">
-            <input type="password" id="pin-entry" class="btn-ghost" style="width:100%; text-align:center; font-size:24px; letter-spacing:8px; margin-bottom:12px" placeholder="DIGITE O PIN" inputmode="numeric" maxlength="6">
-            <button class="btn btn-primary" style="width:100%" data-action="do-unlock">Entrar no App</button>
-        </div>
-    </div>
+<!-- Mobile Navigation -->
+<div class="mobile-nav">
+<button data-action="view" data-view="emitir">🧾</button>
+<button data-action="view" data-view="historico">📋</button>
+<button data-action="view" data-view="financas">📊</button>
+<button data-action="view" data-view="perfil">👤</button>
 </div>
 
-<!-- APP INTERFACE -->
-<div id="page-app" class="page">
-  <div class="app-layout">
-    <aside class="sidebar">
-      <button class="btn btn-primary" data-view="emitir" style="width:100%">✚ Nova Nota</button>
-      <div style="height: 1px; background: var(--border); margin: 10px 0;"></div>
-      <button class="btn btn-ghost" data-view="historico" style="width:100%; justify-content: flex-start;">📋 Histórico</button>
-      <button class="btn btn-ghost" data-view="financas" style="width:100%; justify-content: flex-start;">📊 Finanças</button>
-      <button class="btn btn-ghost" data-view="instrucoes" style="width:100%; justify-content: flex-start;">💡 Guia de Uso</button>
-      <div style="flex:1"></div>
-      <button class="btn btn-ghost" data-view="perfil" style="font-size: 13px;">👤 Meu Perfil</button>
-    </aside>
+<script src="js/config.js"></script>
+<script src="js/crypto.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/trial.js"></script>
+<script src="js/app.js"></script>
+<script src="js/drive.js"></script>
+<script src="js/events.js"></script>
 
-    <main class="main-content">
-      
-      <!-- VIEW: EMITIR -->
-      <div id="view-emitir" class="app-view">
-        <h2>Emitir Nota de Serviço</h2>
-        <p style="color: var(--text-dim); margin-bottom: 24px;">Preencha os dados básicos para gerar o PDF profissional.</p>
-        
-        <div class="card">
-          <div class="form-group">
-            <label>NOME DO CLIENTE</label>
-            <input type="text" id="cli_nome" placeholder="Ex: Empresa de Tecnologia LTDA">
-          </div>
-          <div class="form-group">
-            <label>VALOR DO SERVIÇO (R$)</label>
-            <input type="number" id="srv_valor" placeholder="0,00" step="0.01">
-          </div>
-          <div class="form-group">
-            <label>DESCRIÇÃO</label>
-            <textarea id="srv_desc" rows="3" placeholder="O que foi feito?"></textarea>
-          </div>
-          <button class="btn btn-primary" style="width:100%" data-action="generate-pdf">Gerar e Salvar Nota</button>
-        </div>
-      </div>
-
-      <!-- VIEW: INSTRUÇÕES (NOVO) -->
-      <div id="view-instrucoes" class="app-view" style="display:none">
-        <h2>💡 Como usar o Notas$fácil</h2>
-        <p style="color: var(--text-dim); margin-bottom: 30px;">Aprenda a tirar o máximo proveito do seu app.</p>
-        
-        <div class="help-grid">
-          <div class="help-card">
-            <h4>1. Configuração Inicial</h4>
-            <p style="font-size: 14px; color: var(--text-dim);">Vá em "Meu Perfil" e preencha seus dados de prestador. Eles sairão automaticamente em todas as suas notas.</p>
-          </div>
-          <div class="help-card">
-            <h4>2. Impostos</h4>
-            <p style="font-size: 14px; color: var(--text-dim);">Ao preencher o valor, o sistema calcula o ISS e IRRF automaticamente baseado na categoria que você escolher.</p>
-          </div>
-          <div class="help-card">
-            <h4>3. Backup no Drive</h4>
-            <p style="font-size: 14px; color: var(--text-dim);">Conecte seu Google Drive no histórico para nunca perder uma nota, mesmo que troque de celular.</p>
-          </div>
-          <div class="help-card">
-            <h4>4. Assinatura Digital</h4>
-            <p style="font-size: 14px; color: var(--text-dim);">Você pode assinar com o dedo direto na tela antes de gerar o PDF. Isso dá validade ao seu recibo.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- OUTRAS VIEWS... -->
-    </main>
-  </div>
-
-  <!-- BOTTOM NAV (VISIBLE ON MOBILE) -->
-  <div class="bottom-nav">
-    <a href="#" class="nav-item active" data-view="emitir"><i>✚</i><span>Emitir</span></a>
-    <a href="#" class="nav-item" data-view="historico"><i>📋</i><span>Notas</span></a>
-    <a href="#" class="nav-item" data-view="financas"><i>📊</i><span>Ganhos</span></a>
-    <a href="#" class="nav-item" data-view="instrucoes"><i>💡</i><span>Ajuda</span></a>
-    <a href="#" class="nav-item" data-view="perfil"><i>👤</i><span>Perfil</span></a>
-  </div>
-</div>
-
-<div id="toast" style="position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 12px 24px; border-radius: 30px; display: none; z-index: 3000;"></div>
-
-<!-- SCRIPTS -->
 <script>
-/* SEGURANÇA: Configurações sensíveis devem vir via servidor (n8n). 
-   Aqui as protegemos com escopo léxico (IIFE). */
-const AppCore = (() => {
-    let vaultKey = null;
-
-    // Simulação de roteamento de views
-    function switchView(viewId) {
-        document.querySelectorAll('.app-view').forEach(v => v.style.display = 'none');
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        
-        const target = document.getElementById('view-' + viewId);
-        if(target) target.style.display = 'block';
-        
-        const navItem = document.querySelector(`.nav-item[data-view="${viewId}"]`);
-        if(navItem) navItem.classList.add('active');
-    }
-
-    // Feedback visual nos botões
-    function initButtons() {
-        document.body.addEventListener('click', (e) => {
-            const action = e.target.closest('[data-action]')?.dataset.action;
-            const view = e.target.closest('[data-view]')?.dataset.view;
-
-            if(view) switchView(view);
-
-            if(action === 'unlock-app') {
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                document.getElementById('page-lock').classList.add('active');
-                checkVaultExists();
-            }
-            
-            if(action === 'do-unlock') handleUnlock();
-            if(action === 'setup-vault') handleSetup();
-            if(action === 'generate-pdf') handlePDF();
-        });
-    }
-
-    function checkVaultExists() {
-        const hasVault = localStorage.getItem('nf_vault_check');
-        document.getElementById('setup-area').style.display = hasVault ? 'none' : 'block';
-        document.getElementById('unlock-area').style.display = hasVault ? 'block' : 'none';
-        document.getElementById('lock-title').textContent = hasVault ? 'Acesse seu Cofre' : 'Crie seu Acesso';
-    }
-
-    function handleSetup() {
-        const pin = document.getElementById('pin-create').value;
-        if(pin.length < 6) return showToast("PIN deve ter 6 dígitos");
-        localStorage.setItem('nf_vault_check', 'true'); // Em produção, usar hash PBKDF2
-        showToast("Cofre criado com sucesso!");
-        handleUnlock();
-    }
-
-    function handleUnlock() {
-        // Lógica de desbloqueio real omitida para brevidade (usar WebCrypto API como no MVP)
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById('page-app').classList.add('active');
-        showToast("Bem-vindo!");
-    }
-
-    function handlePDF() {
-        showToast("Gerando PDF profissional...");
-        // Integração com jsPDF aqui
-    }
-
-    function showToast(msg) {
-        const t = document.getElementById('toast');
-        t.textContent = msg;
-        t.style.display = 'block';
-        setTimeout(() => t.style.display = 'none', 3000);
-    }
-
-    return { init: initButtons };
-})();
-
-document.addEventListener('DOMContentLoaded', AppCore.init);
+if ('serviceWorker' in navigator) {
+navigator.serviceWorker.register('sw.js');
+}
 </script>
 
-<!-- Prevenção de Injeção de Scripts Externos Não Autorizados -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>
