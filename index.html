@@ -1,3 +1,1187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'sha256-jXvbovO6wqE6toFx5IMpIrF0d43Fs/1dJjo3Eu6P5hk=' 'sha256-uTVTzNXB+Uj1CHGLE6rxdwx7IXk/+v8E6RgxBWanGPU=' 'sha256-HcqY37EjmLGGdWMpFEWjedSOGEaPsxkrWkP8Xnyq5rE=' 'sha256-khnOZXvGz5A7I+jX/+xGeFWZpeOuVBVn7ZXpOv2KR5E=' 'sha256-fo9Hg/eKXPxSXLilZKmPd4RT2IMRf36q80Mr1m1ir58=' 'sha256-xnQ7LtPzUMppb6njTHNSJg/MYd/q3IbbCMrMv+3Li/M=' 'sha256-P9k8vbqRwBb/rO4md4nRVScvZuhGWb7W/qCkO/VeKYI=' https://cdnjs.cloudflare.com https://accounts.google.com https://apis.google.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com;
+  font-src https://fonts.gstatic.com;
+  img-src 'self' data: blob: https://*.googleusercontent.com;
+  connect-src 'self' data: blob: https://www.googleapis.com https://accounts.google.com https://oauth2.googleapis.com https://automacoes-n8n.nwxz0i.easypanel.host;
+  frame-src https://accounts.google.com;
+  object-src 'none';
+  base-uri 'self';
+  form-action 'self';
+">
+<title>Notas$fácil — Nota de Serviço para Autônomos</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --verde: #00C896;
+  --verde-escuro: #007A5A;
+  --verde-claro: #E0FFF6;
+  --verde-mid: #00A37A;
+  --preto: #0D1117;
+  --cinza-escuro: #1A2332;
+  --cinza-medio: #2C3E50;
+  --cinza-claro: #8899AA;
+  --branco: #F8FFFE;
+  --borda: rgba(0,200,150,0.2);
+  --card-bg: rgba(26,35,50,0.85);
+  --font: 'Sora', sans-serif;
+  --mono: 'DM Mono', monospace;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 24px rgba(0,200,150,0.08);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--font);
+  background: var(--preto);
+  color: var(--branco);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,200,150,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,200,150,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: rgba(13,17,23,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--borda);
+}
+.logo {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--verde);
+  letter-spacing: -0.5px;
+}
+.logo span { color: var(--branco); }
+.nav-actions { display: flex; gap: 12px; align-items: center; }
+.btn-ghost {
+  background: none;
+  border: 1px solid var(--borda);
+  color: var(--branco);
+  padding: 9px 20px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-ghost:hover { border-color: var(--verde); color: var(--verde); }
+.btn-primary {
+  background: var(--verde);
+  border: none;
+  color: var(--preto);
+  padding: 10px 22px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary:hover { background: var(--verde-mid); transform: translateY(-1px); }
+section { position: relative; z-index: 1; }
+.page { display: none; }
+.page.active { display: block; }
+
+/* ===== LANDING ===== */
+#landing { min-height: 100vh; display: flex; flex-direction: column; }
+.hero { padding: 140px 32px 80px; text-align: center; max-width: 860px; margin: 0 auto; }
+.badge {
+  display: inline-block;
+  background: rgba(0,200,150,0.12);
+  border: 1px solid rgba(0,200,150,0.3);
+  color: var(--verde);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 24px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.hero h1 {
+  font-size: clamp(38px, 5vw, 64px);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--branco);
+  margin-bottom: 20px;
+}
+.hero h1 .accent { color: var(--verde); }
+.hero p {
+  font-size: 18px;
+  color: var(--cinza-claro);
+  line-height: 1.7;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+.btn-hero {
+  background: var(--verde);
+  color: var(--preto);
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 700;
+  padding: 16px 36px;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-hero:hover { background: var(--verde-mid); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,200,150,0.3); }
+.trial-note { font-size: 13px; color: var(--cinza-claro); }
+.trial-note strong { color: var(--verde); }
+
+.features { padding: 60px 32px 80px; max-width: 1100px; margin: 0 auto; }
+.section-label {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--verde);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+.section-title { text-align: center; font-size: 32px; font-weight: 700; margin-bottom: 50px; color: var(--branco); }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.feature-card {
+  background: var(--card-bg);
+  border: 1px solid var(--borda);
+  border-radius: var(--radius);
+  padding: 28px;
+  transition: all 0.3s;
+}
+.feature-card:hover { border-color: rgba(0,200,150,0.5); transform: translateY(-3px); box-shadow: var(--shadow); }
+.feature-icon {
+  width: 44px; height: 44px;
+  background: rgba(0,200,150,0.12);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+.feature-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 10px; color: var(--branco); }
+.feature-card p { font-size: 14px; color: var(--cinza-claro); line-height: 1.6; }
+
+.pricing { padding: 60px 32px 80px; max-width: 700px; margin: 0 auto; text-align: center; }
+.price-card {
+  background: var(--card-bg);
+  border: 1px solid var(--borda);
+  border-radius: 20px;
+  padding: 48px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.price-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--verde), var(--verde-mid));
+}
+.price-badge {
+  background: rgba(0,200,150,0.15);
+  border: 1px solid rgba(0,200,150,0.35);
+  color: var(--verde);
+  font-size: 12px; font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.price-amount { display: flex; align-items: baseline; justify-content: center; gap: 4px; margin-bottom: 8px; }
+.price-currency { font-size: 22px; font-weight: 500; color: var(--verde); }
+.price-value { font-size: 68px; font-weight: 700; color: var(--branco); font-family: var(--mono); line-height: 1; }
+.price-period { font-size: 16px; color: var(--cinza-claro); margin-bottom: 32px; }
+.price-features { list-style: none; text-align: left; margin-bottom: 36px; }
+.price-features li {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 15px; color: var(--branco);
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.price-features li:last-child { border-bottom: none; }
+.check { color: var(--verde); font-size: 18px; }
+.trial-pill {
+  background: rgba(0,200,150,0.1);
+  border: 1px solid rgba(0,200,150,0.2);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  font-size: 14px;
+  color: var(--cinza-claro);
+  margin-top: 16px;
+}
+.trial-pill strong { color: var(--verde); }
+
+/* ===== LOCK SCREEN (cofre) ===== */
+#lock { min-height: 100vh; display: none; align-items: center; justify-content: center; padding: 24px; }
+#lock.active { display: flex; }
+.lock-card {
+  background: var(--card-bg);
+  border: 1px solid var(--borda);
+  border-radius: 20px;
+  padding: 44px 40px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.lock-icon { font-size: 44px; margin-bottom: 14px; }
+.lock-card h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.lock-card p { font-size: 13px; color: var(--cinza-claro); line-height: 1.6; margin-bottom: 22px; }
+.lock-card input {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-sm);
+  padding: 13px 16px;
+  font-family: var(--mono);
+  font-size: 18px;
+  letter-spacing: 6px;
+  text-align: center;
+  color: var(--branco);
+  outline: none;
+  margin-bottom: 12px;
+  transition: all 0.2s;
+}
+.lock-card input:focus { border-color: var(--verde); background: rgba(0,200,150,0.05); }
+.lock-card .btn-hero { width: 100%; font-size: 15px; padding: 14px; }
+.lock-note {
+  margin-top: 18px;
+  font-size: 11.5px;
+  color: var(--cinza-claro);
+  background: rgba(0,200,150,0.06);
+  border: 1px solid rgba(0,200,150,0.15);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  line-height: 1.5;
+}
+.lock-note strong { color: var(--verde); }
+
+/* ===== APP ===== */
+#app { min-height: 100vh; padding-top: 70px; }
+.app-layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 70px); }
+.sidebar {
+  background: var(--cinza-escuro);
+  border-right: 1px solid var(--borda);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sidebar-title {
+  font-size: 11px;
+  color: var(--cinza-claro);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 0 12px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+.sidebar-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--cinza-claro);
+  background: none; border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  width: 100%;
+  text-align: left;
+}
+.sidebar-btn:hover { background: rgba(0,200,150,0.07); color: var(--branco); }
+.sidebar-btn.active { background: rgba(0,200,150,0.12); color: var(--verde); font-weight: 500; }
+.sidebar-icon { font-size: 18px; }
+.sidebar-footer {
+  padding: 12px;
+  font-size: 12px;
+  color: var(--cinza-claro);
+  text-align: center;
+  border-top: 1px solid var(--borda);
+  margin-top: 12px;
+}
+.sidebar-footer .trial-title { color: var(--verde); font-weight: 600; margin-bottom: 2px; }
+.main-content { padding: 32px; overflow-y: auto; max-height: calc(100vh - 70px); }
+.view { display: none; }
+.view.active { display: block; }
+
+.page-header { margin-bottom: 28px; }
+.page-header h2 { font-size: 24px; font-weight: 700; color: var(--branco); margin-bottom: 6px; }
+.page-header p { font-size: 14px; color: var(--cinza-claro); }
+.form-section {
+  background: var(--card-bg);
+  border: 1px solid var(--borda);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.form-section h3 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--verde);
+  font-family: var(--mono);
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--borda);
+}
+.form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cinza-claro);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--branco);
+  transition: all 0.2s;
+  outline: none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: var(--verde); background: rgba(0,200,150,0.05); }
+.form-group select option { background: var(--cinza-escuro); color: var(--branco); }
+.form-group textarea { resize: vertical; min-height: 80px; }
+.form-group small { color: var(--cinza-claro); font-size: 11px; }
+.form-actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+.btn-action {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+.btn-gerar { background: var(--verde); color: var(--preto); }
+.btn-gerar:hover { background: var(--verde-mid); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,200,150,0.25); }
+.btn-outline { background: transparent; border: 1px solid var(--borda) !important; color: var(--cinza-claro); }
+.btn-outline:hover { border-color: var(--verde) !important; color: var(--verde); }
+
+.info-box {
+  background: rgba(0,200,150,0.06);
+  border: 1px solid rgba(0,200,150,0.2);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--cinza-claro);
+  line-height: 1.6;
+}
+.info-box strong { color: var(--verde); }
+
+.calc-result {
+  background: var(--card-bg);
+  border: 1px solid var(--borda);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-top: 20px;
+  display: none;
+}
+.calc-result.show { display: block; }
+.calc-title {
+  font-size: 13px;
+  font-family: var(--mono);
+  color: var(--verde);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.calc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 14px;
+}
+.calc-row:last-child { border-bottom: none; }
+.calc-row .label { color: var(--cinza-claro); }
+.calc-row .valor { font-family: var(--mono); font-weight: 500; }
+.calc-row.total .label { color: var(--branco); font-weight: 600; }
+.calc-row.total .valor { color: var(--verde); font-size: 18px; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+.stat-card { background: var(--card-bg); border: 1px solid var(--borda); border-radius: var(--radius); padding: 20px 22px; }
+.stat-label { font-size: 12px; color: var(--cinza-claro); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.stat-value { font-family: var(--mono); font-size: 26px; font-weight: 500; color: var(--branco); }
+.stat-value.green { color: var(--verde); }
+.stat-sub { font-size: 12px; color: var(--cinza-claro); margin-top: 4px; }
+
+.chart-container { background: var(--card-bg); border: 1px solid var(--borda); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
+.chart-container h3 { font-size: 15px; font-weight: 600; color: var(--branco); margin-bottom: 20px; }
+
+.notas-list { display: flex; flex-direction: column; gap: 12px; }
+.nota-item {
+  background: var(--card-bg);
+  border: 1px solid var(--borda);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.nota-info h4 { font-size: 15px; font-weight: 600; color: var(--branco); margin-bottom: 4px; }
+.nota-info p { font-size: 13px; color: var(--cinza-claro); }
+.nota-valor { font-family: var(--mono); font-size: 18px; font-weight: 500; color: var(--verde); white-space: nowrap; }
+.nota-actions { display: flex; gap: 8px; }
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--font);
+  border: 1px solid var(--borda);
+  background: none;
+  color: var(--cinza-claro);
+  transition: all 0.15s;
+}
+.btn-sm:hover { border-color: var(--verde); color: var(--verde); }
+.cat-tag {
+  font-size: 11px;
+  background: rgba(0,200,150,0.1);
+  color: var(--verde);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.sig-canvas-wrap {
+  border: 1.5px dashed var(--borda);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.03);
+  display: inline-block;
+  cursor: crosshair;
+  max-width: 100%;
+}
+#sigCanvas { display: block; border-radius: var(--radius-sm); max-width: 100%; touch-action: none; }
+
+.upload-area {
+  border: 2px dashed rgba(0,200,150,0.25);
+  border-radius: var(--radius);
+  padding: 36px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: rgba(0,200,150,0.03);
+}
+.upload-area:hover { border-color: rgba(0,200,150,0.5); background: rgba(0,200,150,0.07); }
+.upload-area p { font-size: 14px; color: var(--cinza-claro); margin-top: 10px; }
+.upload-icon { font-size: 36px; }
+.foto-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 16px; }
+.foto-thumb { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--borda); }
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: var(--cinza-escuro);
+  border: 1px solid var(--borda);
+  border-radius: 18px;
+  padding: 36px;
+  max-width: 480px;
+  width: 100%;
+  position: relative;
+}
+.modal h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--branco); }
+.modal p { font-size: 14px; color: var(--cinza-claro); margin-bottom: 24px; line-height: 1.6; }
+.modal-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: none; border: none;
+  color: var(--cinza-claro);
+  font-size: 22px;
+  cursor: pointer;
+}
+
+#pdfPreview {
+  background: white;
+  color: #111;
+  border-radius: var(--radius);
+  padding: 40px;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  margin-top: 24px;
+  display: none;
+}
+#pdfPreview.show { display: block; }
+.pdf-header-nota {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #00C896;
+}
+.pdf-title { font-size: 22px; font-weight: 700; color: #007A5A; }
+.pdf-num { font-size: 12px; color: #666; margin-top: 4px; }
+.pdf-section { margin-bottom: 16px; }
+.pdf-section-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #007A5A;
+  font-weight: 700;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 4px;
+}
+.pdf-field { margin-bottom: 6px; }
+.pdf-label { font-size: 10px; color: #888; text-transform: uppercase; }
+.pdf-value { font-size: 13px; color: #111; font-weight: 500; }
+.pdf-total-box { background: #f0fff9; border: 1px solid #00C896; border-radius: 8px; padding: 16px; margin-top: 16px; }
+.pdf-impostos { background: #fafafa; border-radius: 6px; padding: 12px; margin-top: 8px; }
+.pdf-tax-row { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; color: #555; }
+.pdf-total-final {
+  display: flex;
+  justify-content: space-between;
+  font-size: 17px;
+  font-weight: 700;
+  color: #007A5A;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 2px solid #00C896;
+}
+
+.tab-row {
+  display: flex; gap: 4px;
+  background: rgba(255,255,255,0.04);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  margin-bottom: 24px;
+  width: fit-content;
+}
+.tab-btn {
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-family: var(--font);
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: var(--cinza-claro);
+  transition: all 0.15s;
+}
+.tab-btn.active { background: var(--verde); color: var(--preto); font-weight: 600; }
+
+.tag-imposto { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 500; }
+.tag-iss { background: rgba(255,200,50,0.12); color: #FFC832; }
+.tag-ir { background: rgba(100,180,255,0.12); color: #64B4FF; }
+.tag-inss { background: rgba(200,100,255,0.12); color: #C864FF; }
+.required { color: #f87171; margin-left: 2px; }
+.divider { border: none; border-top: 1px solid var(--borda); margin: 24px 0; }
+.empty-state { text-align: center; padding: 60px 20px; color: var(--cinza-claro); }
+.empty-state .empty-icon { font-size: 48px; margin-bottom: 16px; }
+.empty-state h3 { font-size: 18px; color: var(--branco); margin-bottom: 8px; }
+.empty-state p { font-size: 14px; }
+
+/* GOOGLE DRIVE */
+.gdrive-bar {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--borda);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.gdrive-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(0,200,150,0.15);
+  border: 1.5px solid var(--verde);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 600; color: var(--verde);
+  overflow: hidden;
+}
+.gdrive-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.gdrive-info { flex: 1; }
+.gdrive-info strong { font-size: 14px; color: var(--branco); display: block; }
+.gdrive-info span { font-size: 12px; color: var(--cinza-claro); }
+.btn-drive {
+  display: flex; align-items: center; gap: 7px;
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font); font-size: 13px; font-weight: 600;
+  cursor: pointer; border: none; transition: all 0.2s;
+}
+.btn-drive-connect { background: #fff; color: #3c4043; border: 1px solid rgba(255,255,255,0.2) !important; }
+.btn-drive-connect:hover { background: #f1f3f4; }
+.btn-drive-logout { background: transparent; color: var(--cinza-claro); border: 1px solid var(--borda) !important; font-size: 12px; padding: 6px 12px; }
+.btn-drive-logout:hover { color: #f87171; border-color: #f87171 !important; }
+.drive-progress {
+  background: var(--card-bg);
+  border: 1px solid var(--borda);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  display: none;
+}
+.drive-progress.show { display: block; }
+.drive-progress h4 { font-size: 14px; color: var(--branco); margin-bottom: 14px; }
+.progress-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--cinza-claro);
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.progress-item:last-child { border-bottom: none; }
+.progress-icon { font-size: 16px; min-width: 20px; text-align: center; }
+.progress-label { min-width: 180px; }
+.progress-bar-wrap { flex: 1; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+.progress-bar-fill { height: 100%; border-radius: 2px; background: var(--verde); transition: width 0.4s ease; width: 0%; }
+.progress-status { font-size: 11px; min-width: 60px; text-align: right; }
+.status-ok { color: var(--verde); }
+.status-err { color: #f87171; }
+.status-wait { color: var(--cinza-claro); }
+.drive-link-box {
+  background: rgba(0,200,150,0.06);
+  border: 1px solid rgba(0,200,150,0.25);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-top: 14px;
+  display: none;
+}
+.drive-link-box.show { display: block; }
+.drive-link-box p { font-size: 13px; color: var(--cinza-claro); margin-bottom: 8px; }
+.drive-link-box a { color: var(--verde); font-size: 14px; font-weight: 500; text-decoration: none; word-break: break-all; }
+.drive-link-box a:hover { text-decoration: underline; }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translate(-50%, 80px);
+  background: var(--cinza-escuro);
+  border: 1px solid var(--borda);
+  color: var(--branco);
+  padding: 13px 22px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  z-index: 300;
+  opacity: 0;
+  transition: all 0.3s ease;
+  max-width: 90vw;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+}
+.toast.show { transform: translate(-50%, 0); opacity: 1; }
+.toast.ok { border-color: var(--verde); }
+.toast.err { border-color: #f87171; color: #fca5a5; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .app-layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  nav { padding: 12px 16px; }
+  .hero { padding: 120px 20px 60px; }
+  .main-content { padding: 20px 16px; max-height: none; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero > * { animation: fadeUp 0.5s ease both; }
+.hero > *:nth-child(2) { animation-delay: 0.1s; }
+.hero > *:nth-child(3) { animation-delay: 0.2s; }
+.hero > *:nth-child(4) { animation-delay: 0.3s; }
+.hero > *:nth-child(5) { animation-delay: 0.4s; }
+
+</style>
+
+<!-- Bibliotecas com SRI (integridade verificada — CDN comprometido = script bloqueado) -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+  integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"
+  integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"
+  integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://apis.google.com/js/api.js" async defer></script>
+
+<!-- Código da aplicação -->
+<script>
+/* =========================================================================
+ * Notas$fácil — config.js
+ * Endpoints ofuscados (XOR + Base64).
+ *
+ * NOTA HONESTA DE SEGURANÇA: ofuscação no front-end dificulta a leitura
+ * casual, mas NÃO é sigilo absoluto — qualquer coisa que o navegador usa
+ * pode ser inspecionada. Por isso:
+ *   - Os webhooks n8n DEVEM validar tudo no servidor (IP, deviceId, HMAC).
+ *   - O Google Client ID é um identificador PÚBLICO por design; a proteção
+ *     real é a restrição de "Authorized JavaScript origins" no Google Cloud.
+ *   - Nenhuma senha/secret/token de API privado existe neste código.
+ * ========================================================================= */
+'use strict';
+
+const NFConfig = (() => {
+  const _k = 'nf$2026!aurora';
+
+  function _d(b64) {
+    const raw = atob(b64);
+    let out = '';
+    for (let i = 0; i < raw.length; i++) {
+      out += String.fromCharCode(raw.charCodeAt(i) ^ _k.charCodeAt(i % _k.length));
+    }
+    return out;
+  }
+
+  // Endpoints (ofuscados — decodificados apenas em memória, sob demanda)
+  const _EP = {
+    trial: 'BhJQQkMIGQ4AAAYAHwANCUFBHVwOT08bBRcIUQdIQVNDS0ZADxAeQRoOHRILRVVQXk4OHl0MGgQNDQlGQltXTQ==',
+    pay:   'BhJQQkMIGQ4AAAYAHwANCUFBHVwOT08bBRcIUQdIQVNDS0ZADxAeQRoOHRILRVVQXk4OHl8bFxIaSUlCHUVTQwkaHQQ='
+  };
+
+  return Object.freeze({
+    APP_NAME: 'Notas$fácil',
+    APP_VERSION: '1.0.0',
+    PRECO_MENSAL: 15.99,
+    TRIAL_DIAS: 2,
+
+    // Client ID público do Google OAuth (restringir por origem no Console).
+    // Deixe '' para desativar a integração com o Drive até configurar.
+    GOOGLE_CLIENT_ID: '',
+    DRIVE_SCOPES: 'https://www.googleapis.com/auth/drive.file',
+
+    // Segurança
+    PBKDF2_ITER: 310000,
+    PIN_MIN_LEN: 6,
+    AUTOLOCK_MS: 5 * 60 * 1000,        // 5 min de inatividade => trava o cofre
+    TRIAL_CACHE_TTL_MS: 6 * 60 * 60 * 1000, // revalida trial no servidor a cada 6h
+
+    endpoint(name) { return _d(_EP[name]); }
+  });
+})();
+
+</script>
+<script>
+/* =========================================================================
+ * Notas$fácil — crypto.js
+ * Camada de criptografia real (WebCrypto API):
+ *   - AES-GCM 256 bits para todos os dados em repouso
+ *   - Chave derivada de PIN do usuário via PBKDF2-SHA256 (310k iterações)
+ *   - Salt e IV aleatórios (crypto.getRandomValues)
+ *   - Verificador de PIN sem armazenar o PIN (challenge criptografado)
+ *   - HMAC-SHA256 para assinar requisições aos webhooks
+ * A chave NUNCA é persistida: vive só em memória e é destruída no lock.
+ * ========================================================================= */
+'use strict';
+
+const NFCrypto = (() => {
+  const te = new TextEncoder();
+  const td = new TextDecoder();
+
+  let _key = null;          // CryptoKey AES-GCM (apenas em memória)
+  let _hmacKey = null;      // CryptoKey HMAC derivada do mesmo material
+
+  const b64 = {
+    enc: (buf) => btoa(String.fromCharCode(...new Uint8Array(buf))),
+    dec: (str) => Uint8Array.from(atob(str), c => c.charCodeAt(0))
+  };
+
+  function randomBytes(n) {
+    const a = new Uint8Array(n);
+    crypto.getRandomValues(a);
+    return a;
+  }
+
+  async function deriveKeys(pin, saltBytes) {
+    const baseKey = await crypto.subtle.importKey(
+      'raw', te.encode(pin), 'PBKDF2', false, ['deriveBits']
+    );
+    const bits = await crypto.subtle.deriveBits(
+      { name: 'PBKDF2', salt: saltBytes, iterations: NFConfig.PBKDF2_ITER, hash: 'SHA-256' },
+      baseKey, 512
+    );
+    const aesRaw = bits.slice(0, 32);
+    const hmacRaw = bits.slice(32, 64);
+    const aesKey = await crypto.subtle.importKey(
+      'raw', aesRaw, { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']
+    );
+    const hmacKey = await crypto.subtle.importKey(
+      'raw', hmacRaw, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+    );
+    return { aesKey, hmacKey };
+  }
+
+  return {
+    randomBytes,
+    b64,
+
+    isUnlocked() { return _key !== null; },
+
+    lock() { _key = null; _hmacKey = null; },
+
+    /** Cria o cofre: deriva chave do PIN e grava um "verificador". */
+    async setup(pin) {
+      if (typeof pin !== 'string' || pin.length < NFConfig.PIN_MIN_LEN) {
+        throw new Error('PIN muito curto');
+      }
+      const salt = randomBytes(16);
+      const { aesKey, hmacKey } = await deriveKeys(pin, salt);
+      _key = aesKey; _hmacKey = hmacKey;
+      // verificador: string conhecida criptografada — prova o PIN sem guardá-lo
+      const verifier = await this.encryptString('nf-vault-ok:' + NFConfig.APP_VERSION);
+      return { salt: b64.enc(salt), verifier };
+    },
+
+    /** Destrava o cofre validando o PIN contra o verificador. */
+    async unlock(pin, saltB64, verifier) {
+      const { aesKey, hmacKey } = await deriveKeys(pin, b64.dec(saltB64));
+      try {
+        const tmpKey = _key; _key = aesKey;
+        const plain = await this.decryptString(verifier);
+        if (!plain.startsWith('nf-vault-ok:')) { _key = tmpKey; return false; }
+        _hmacKey = hmacKey;
+        return true;
+      } catch (e) {
+        _key = null; _hmacKey = null;
+        return false;
+      }
+    },
+
+    /** Criptografa qualquer objeto JSON => { iv, ct } em base64. */
+    async encryptJSON(obj) {
+      return this.encryptString(JSON.stringify(obj));
+    },
+
+    async decryptJSON(payload) {
+      return JSON.parse(await this.decryptString(payload));
+    },
+
+    async encryptString(str) {
+      if (!_key) throw new Error('Cofre travado');
+      const iv = randomBytes(12);
+      const ct = await crypto.subtle.encrypt(
+        { name: 'AES-GCM', iv }, _key, te.encode(str)
+      );
+      return { iv: b64.enc(iv), ct: b64.enc(ct) };
+    },
+
+    async decryptString(payload) {
+      if (!_key) throw new Error('Cofre travado');
+      const plain = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv: b64.dec(payload.iv) }, _key, b64.dec(payload.ct)
+      );
+      return td.decode(plain);
+    },
+
+    /** Assina um corpo de requisição (anti-tamper p/ o n8n validar). */
+    async signRequest(bodyString) {
+      if (!_hmacKey) return null;
+      const sig = await crypto.subtle.sign('HMAC', _hmacKey, te.encode(bodyString));
+      return b64.enc(sig);
+    },
+
+    /** SHA-256 hex — usado p/ deviceId e integridade de notas. */
+    async sha256Hex(str) {
+      const h = await crypto.subtle.digest('SHA-256', te.encode(str));
+      return [...new Uint8Array(h)].map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+  };
+})();
+
+</script>
+<script>
+/* =========================================================================
+ * Notas$fácil — storage.js
+ * Banco de dados local CRIPTOGRAFADO (IndexedDB + AES-GCM).
+ *   - Nada é gravado em claro: cada registro vai como {iv, ct}.
+ *   - Fotos/comprovantes (base64 grandes) também são cifrados.
+ *   - Migração automática do localStorage antigo (MVP) para o cofre.
+ *   - localStorage só guarda metadados NÃO sensíveis (salt, verificador,
+ *     contador travado por HMAC) — inúteis sem o PIN.
+ * ========================================================================= */
+'use strict';
+
+const NFStore = (() => {
+  const DB_NAME = 'nf_vault';
+  const DB_VER = 1;
+  const STORES = ['notas', 'despesas', 'meta'];
+  let _db = null;
+
+  function open() {
+    if (_db) return Promise.resolve(_db);
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME, DB_VER);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        STORES.forEach(s => {
+          if (!db.objectStoreNames.contains(s)) db.createObjectStore(s, { keyPath: 'id' });
+        });
+      };
+      req.onsuccess = () => { _db = req.result; resolve(_db); };
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  function tx(store, mode, fn) {
+    return open().then(db => new Promise((resolve, reject) => {
+      const t = db.transaction(store, mode);
+      const s = t.objectStore(store);
+      const out = fn(s);
+      t.oncomplete = () => resolve(out && out.result !== undefined ? out.result : undefined);
+      t.onerror = () => reject(t.error);
+    }));
+  }
+
+  function getAllRaw(store) {
+    return open().then(db => new Promise((resolve, reject) => {
+      const t = db.transaction(store, 'readonly');
+      const req = t.objectStore(store).getAll();
+      req.onsuccess = () => resolve(req.result || []);
+      req.onerror = () => reject(req.error);
+    }));
+  }
+
+  return {
+    /* ---------- registros cifrados ---------- */
+    async put(store, obj) {
+      const payload = await NFCrypto.encryptJSON(obj);
+      // hash de integridade do conteúdo (detecta adulteração manual no IndexedDB)
+      payload.h = await NFCrypto.sha256Hex(payload.ct);
+      await tx(store, 'readwrite', s => s.put({ id: obj.id, ...payload }));
+    },
+
+    async getAll(store) {
+      const rows = await getAllRaw(store);
+      const out = [];
+      for (const r of rows) {
+        try {
+          const h = await NFCrypto.sha256Hex(r.ct);
+          if (h !== r.h) { console.warn('Registro adulterado ignorado:', r.id); continue; }
+          out.push(await NFCrypto.decryptJSON({ iv: r.iv, ct: r.ct }));
+        } catch (e) { console.warn('Registro ilegível ignorado:', r.id); }
+      }
+      return out;
+    },
+
+    async remove(store, id) {
+      await tx(store, 'readwrite', s => s.delete(id));
+    },
+
+    async clearAll() {
+      for (const s of STORES) await tx(s, 'readwrite', st => st.clear());
+    },
+
+    /* ---------- meta (cifrada também) ---------- */
+    async setMeta(key, value) {
+      const payload = await NFCrypto.encryptJSON({ key, value });
+      payload.h = await NFCrypto.sha256Hex(payload.ct);
+      await tx('meta', 'readwrite', s => s.put({ id: key, ...payload }));
+    },
+
+    async getMeta(key) {
+      const rows = await getAllRaw('meta');
+      const r = rows.find(x => x.id === key);
+      if (!r) return null;
+      try {
+        const h = await NFCrypto.sha256Hex(r.ct);
+        if (h !== r.h) return null;
+        const obj = await NFCrypto.decryptJSON({ iv: r.iv, ct: r.ct });
+        return obj.value;
+      } catch (e) { return null; }
+    },
+
+    /* ---------- migração do MVP (localStorage em claro) ---------- */
+    async migrateFromLocalStorage() {
+      const legacyNotas = localStorage.getItem('nf_notas');
+      const legacyDesp = localStorage.getItem('nf_despesas');
+      const legacyPerfil = localStorage.getItem('nf_perfil');
+      const legacyCounter = localStorage.getItem('nf_counter');
+      let migrated = 0;
+
+      try {
+        if (legacyNotas) {
+          for (const n of JSON.parse(legacyNotas)) { await this.put('notas', n); migrated++; }
+        }
+        if (legacyDesp) {
+          for (const d of JSON.parse(legacyDesp)) { await this.put('despesas', d); migrated++; }
+        }
+        if (legacyPerfil && legacyPerfil !== '{}') {
+          await this.setMeta('perfil', JSON.parse(legacyPerfil)); migrated++;
+        }
+        if (legacyCounter) await this.setMeta('counter', parseInt(legacyCounter, 10) || 1);
+      } catch (e) { console.warn('Migração parcial:', e); }
+
+      // Apaga TODOS os dados em claro do MVP antigo
+      ['nf_notas', 'nf_despesas', 'nf_perfil', 'nf_counter', 'nf_gdrive_user']
+        .forEach(k => localStorage.removeItem(k));
+
+      return migrated;
+    }
+  };
+})();
+
+</script>
+<script>
+/* =========================================================================
+ * Notas$fácil — trial.js
+ * Controle do teste grátis (2 dias) e assinatura (R$ 15,99/mês).
+ *
+ * PRINCÍPIO: o front-end NUNCA decide sozinho se o trial é válido.
+ * Quem manda é o webhook n8n (check-trial), que valida IP + deviceId no
+ * servidor. O que fica no cliente é apenas um cache cifrado com TTL curto,
+ * para não bater no servidor a cada clique. Se o usuário adulterar o cache,
+ * ele não decifra (AES-GCM autentica) e o app revalida no servidor.
+ * ========================================================================= */
+'use strict';
+
+const NFTrial = (() => {
+  let _status = null; // { plan: 'trial'|'active'|'expired', diasRestantes, checkedAt }
+
+  /** deviceId estável e anônimo (não identifica o usuário, só o dispositivo). */
+  async function deviceId() {
+    let seed = localStorage.getItem('nf_dev');
+    if (!seed) {
+      seed = NFCrypto.b64.enc(NFCrypto.randomBytes(24));
+      localStorage.setItem('nf_dev', seed);
+    }
+    return NFCrypto.sha256Hex('nf-device:' + seed + ':' + (navigator.userAgent || ''));
+  }
+
+  async function fetchStatusFromServer() {
+    const dev = await deviceId();
+    const body = JSON.stringify({
+      deviceId: dev,
+      app: NFConfig.APP_NAME,
+      v: NFConfig.APP_VERSION,
+      ts: Date.now()
+    });
+    const sig = await NFCrypto.signRequest(body); // HMAC (se cofre aberto)
+    const headers = { 'Content-Type': 'application/json' };
+    if (sig) headers['X-NF-Signature'] = sig;
+
+    const resp = await fetch(NFConfig.endpoint('trial'), {
+      method: 'POST', headers, body, mode: 'cors'
+    });
+    if (!resp.ok) throw new Error('check-trial HTTP ' + resp.status);
+    const data = await resp.json();
+    // resposta esperada do n8n: { plan, trialStart, diasRestantes }
+    return {
+      plan: data.plan || (data.diasRestantes > 0 ? 'trial' : 'expired'),
+      diasRestantes: Math.max(0, parseInt(data.diasRestantes ?? 0, 10)),
+      checkedAt: Date.now()
+    };
+  }
+
+  return {
+    async getStatus(force = false) {
+      // 1) cache cifrado válido?
+      if (!force) {
+        const cached = await NFStore.getMeta('trial_status');
+        if (cached && (Date.now() - cached.checkedAt) < NFConfig.TRIAL_CACHE_TTL_MS) {
+          _status = cached;
+          return cached;
+        }
+      }
+      // 2) servidor
+      try {
+        _status = await fetchStatusFromServer();
+        await NFStore.setMeta('trial_status', _status);
+      } catch (e) {
+        console.warn('check-trial indisponível:', e.message);
+        // fail-safe: usa último cache cifrado; sem cache => modo restrito
+        const cached = await NFStore.getMeta('trial_status');
+        _status = cached || { plan: 'unknown', diasRestantes: 0, checkedAt: Date.now() };
+      }
+      return _status;
+    },
+
+    isAllowed() {
+      if (!_status) return false;
+      return _status.plan === 'active' || _status.plan === 'trial' || _status.plan === 'unknown';
+    },
+
+    label() {
+      if (!_status) return '...';
+      if (_status.plan === 'active') return 'Plano ativo';
+      if (_status.plan === 'trial') return `${_status.diasRestantes} de ${NFConfig.TRIAL_DIAS} dias restantes`;
+      if (_status.plan === 'unknown') return 'Verificando...';
+      return 'Teste expirado';
+    },
+
+    /** Inicia assinatura: o n8n cria a preferência no Mercado Pago e
+     *  devolve { checkoutUrl }. Nenhuma credencial de pagamento no front. */
+    async assinar() {
+      const dev = await deviceId();
+      const body = JSON.stringify({
+        action: 'create_subscription',
+        deviceId: dev,
+        valor: NFConfig.PRECO_MENSAL,
+        ts: Date.now()
+      });
+      const sig = await NFCrypto.signRequest(body);
+      const headers = { 'Content-Type': 'application/json' };
+      if (sig) headers['X-NF-Signature'] = sig;
+
+      const resp = await fetch(NFConfig.endpoint('pay'), {
+        method: 'POST', headers, body, mode: 'cors'
+      });
+      if (!resp.ok) throw new Error('Pagamento indisponível (HTTP ' + resp.status + ')');
+      const data = await resp.json();
+      if (data.checkoutUrl && /^https:\/\//.test(data.checkoutUrl)) {
+        window.open(data.checkoutUrl, '_blank', 'noopener');
+        return true;
+      }
+      throw new Error('Resposta de pagamento inválida');
+    }
+  };
+})();
+
+</script>
+<script>
 /* =========================================================================
  * Notas$fácil — app.js (núcleo)
  * - Cofre com PIN (setup / unlock / auto-lock por inatividade)
@@ -78,11 +1262,11 @@ async function criarCofre() {
     localStorage.setItem('nf_vault_salt', salt);
     localStorage.setItem('nf_vault_check', JSON.stringify(verifier));
     const migrated = await NFStore.migrateFromLocalStorage();
-    if (migrated > 0) toast(`Cofre criado. ${migrated} registro(s) antigos migrados e criptografados.`);
-    else toast('Cofre criptografado criado com sucesso!');
+    if (migrated > 0) toast(`Conta criada. ${migrated} registro(s) antigos importados.`);
+    else toast('Conta criada com sucesso!');
     await aposDesbloquear();
   } catch (e) {
-    toast('Erro ao criar cofre: ' + e.message, false);
+    toast('Erro ao criar acesso: ' + e.message, false);
   } finally {
     $('pin-new').value = ''; $('pin-new2').value = '';
   }
@@ -119,15 +1303,12 @@ function travarCofre() {
 function resetarAutoLock() {
   clearTimeout(_lockTimer);
   if (NFCrypto.isUnlocked()) {
-    _lockTimer = setTimeout(() => { travarCofre(); toast('Cofre travado por inatividade.'); }, NFConfig.AUTOLOCK_MS);
+    _lockTimer = setTimeout(() => { travarCofre(); toast('App bloqueado por inatividade.'); }, NFConfig.AUTOLOCK_MS);
   }
 }
 ['click', 'keydown', 'mousemove', 'touchstart'].forEach(ev =>
   document.addEventListener(ev, resetarAutoLock, { passive: true })
 );
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden && NFCrypto.isUnlocked()) travarCofre();
-});
 
 async function aposDesbloquear() {
   notas = (await NFStore.getAll('notas')).sort((a, b) => b.id - a.id);
@@ -224,7 +1405,7 @@ async function salvarPerfil() {
   };
   await NFStore.setMeta('perfil', perfil);
   carregarPerfil();
-  toast('Perfil salvo (criptografado).');
+  toast('Perfil salvo com sucesso!');
 }
 
 /* =========================================================================
@@ -417,7 +1598,7 @@ async function gerarNota() {
 
   $('pdfPreview').classList.add('show');
   $('pdf-actions').style.display = 'block';
-  $('pdf-actions').scrollIntoView({ behavior: 'smooth' });
+  if ($('pdf-actions').scrollIntoView) $('pdf-actions').scrollIntoView({ behavior: 'smooth' });
   $('modalSucesso').classList.add('show');
 }
 
@@ -426,6 +1607,7 @@ async function gerarNota() {
  * ========================================================================= */
 function baixarPDF() {
   if (!notaAtual) { toast('Gere uma nota primeiro.', false); return; }
+  if (!window.jspdf) { toast('Gerador de PDF ainda carregando — verifique a internet e tente de novo.', false); return; }
   const n = notaAtual;
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
@@ -580,6 +1762,7 @@ async function excluirNota(id) {
 
 function exportarExcel() {
   if (!notas.length) { toast('Nenhuma nota para exportar.', false); return; }
+  if (!window.XLSX) { toast('Exportador Excel ainda carregando — tente novamente.', false); return; }
   const data = notas.map(n => ({
     'Número': n.numero,
     'Data': new Date(n.data).toLocaleDateString('pt-BR'),
@@ -617,6 +1800,7 @@ function renderFinancas() {
 }
 
 function buildChartFluxo() {
+  if (!window.Chart) return;
   const ctx = $('chartFluxo').getContext('2d');
   if (chartFluxo) chartFluxo.destroy();
   const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
@@ -653,6 +1837,7 @@ function buildChartFluxo() {
 }
 
 function buildChartPizza(impostos, inss, liquido) {
+  if (!window.Chart) return;
   const ctx = $('chartPizza').getContext('2d');
   if (chartPizza) chartPizza.destroy();
   chartPizza = new Chart(ctx, {
@@ -717,7 +1902,7 @@ async function salvarDespesa() {
   fotosTemp = [];
   $('foto-grid').replaceChildren();
   renderDespesas();
-  toast('Comprovante salvo (criptografado).');
+  toast('Comprovante salvo!');
 }
 
 function renderDespesas() {
@@ -771,13 +1956,934 @@ async function assinarPlano() {
 /* =========================================================================
  * INIT
  * ========================================================================= */
-document.addEventListener('DOMContentLoaded', () => {
+let _nfAppInit = false;
+function nfInitApp() {
+  if (_nfAppInit) return;
+  _nfAppInit = true;
   initAssinatura();
   $('prest_tipo').addEventListener('change', function () {
     $('cnpj-row').style.display = (this.value === 'mei_cnpj') ? 'grid' : 'none';
   });
   $('pin-unlock').addEventListener('keydown', e => { if (e.key === 'Enter') destravarCofre(); });
   $('pin-new2').addEventListener('keydown', e => { if (e.key === 'Enter') criarCofre(); });
-});
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', nfInitApp);
+} else {
+  nfInitApp();
+}
 
-   
+</script>
+<script>
+/* =========================================================================
+ * Notas$fácil — drive.js
+ * Integração Google Drive (OAuth 2.0 implícito, escopo mínimo drive.file).
+ * Segurança:
+ *   - Client ID público vem de NFConfig (restringir origens no Console).
+ *   - O access_token NUNCA é persistido: vive apenas em memória.
+ *   - Apenas o perfil básico (nome/e-mail/foto) é cacheado — CIFRADO.
+ *   - Query do Drive com escape de aspas (evita injeção na query).
+ * ========================================================================= */
+'use strict';
+
+const MESES_PT = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+let googleUser = null;
+let driveAccessToken = null; // somente memória — nunca em storage
+let tokenClient = null;
+let gapiReady = false;
+let gisReady = false;
+
+function onGapiLoaded() {
+  if (!window.gapi) return;
+  gapi.load('client', async () => {
+    await gapi.client.init({});
+    gapiReady = true;
+    tentarIniciarDrive();
+  });
+}
+
+function onGisLoaded() {
+  if (!NFConfig.GOOGLE_CLIENT_ID) return;
+  if (!window.google?.accounts?.oauth2) return;
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: NFConfig.GOOGLE_CLIENT_ID,
+    scope: NFConfig.DRIVE_SCOPES,
+    callback: (resp) => {
+      if (resp.error) { console.error('OAuth erro:', resp.error); return; }
+      driveAccessToken = resp.access_token;
+      buscarInfoUsuario();
+    }
+  });
+  gisReady = true;
+  tentarIniciarDrive();
+}
+
+async function tentarIniciarDrive() {
+  if (!NFCrypto.isUnlocked()) return;
+  const salvo = await NFStore.getMeta('gdrive_user'); // cifrado
+  if (salvo && gapiReady && gisReady) {
+    googleUser = salvo;
+    atualizarBarraDrive();
+  }
+}
+
+function iniciarLoginGoogle() {
+  if (!NFConfig.GOOGLE_CLIENT_ID) {
+    toast('Google Drive ainda não configurado pelo administrador.', false);
+    return;
+  }
+  if (!gisReady) { toast('Aguarde o carregamento do Google…', false); return; }
+  tokenClient.requestAccessToken({ prompt: 'consent' });
+}
+
+async function buscarInfoUsuario() {
+  try {
+    const r = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+      headers: { Authorization: 'Bearer ' + driveAccessToken }
+    });
+    const info = await r.json();
+    googleUser = { nome: info.name, email: info.email, foto: info.picture };
+    await NFStore.setMeta('gdrive_user', googleUser); // cifrado no cofre
+    atualizarBarraDrive();
+  } catch (e) { console.error(e); }
+}
+
+function atualizarBarraDrive() {
+  if (!googleUser) return;
+  const av = document.getElementById('gdrive-avatar');
+  av.replaceChildren();
+  if (googleUser.foto && /^https:\/\/[a-z0-9.-]+\.googleusercontent\.com\//.test(googleUser.foto)) {
+    const img = document.createElement('img');
+    img.src = googleUser.foto; img.alt = '';
+    av.append(img);
+  } else {
+    av.textContent = (googleUser.nome || '?')[0];
+  }
+  document.getElementById('gdrive-name').textContent = googleUser.nome || '';
+  document.getElementById('gdrive-email').textContent = googleUser.email || '';
+  document.getElementById('btn-gdrive-connect').style.display = 'none';
+  document.getElementById('btn-gdrive-logout').style.display = 'flex';
+  document.getElementById('btn-enviar-drive').style.display = 'flex';
+}
+
+async function deslogarGoogle() {
+  if (driveAccessToken && window.google?.accounts?.oauth2) {
+    google.accounts.oauth2.revoke(driveAccessToken);
+  }
+  driveAccessToken = null;
+  googleUser = null;
+  if (NFCrypto.isUnlocked()) await NFStore.setMeta('gdrive_user', null);
+  document.getElementById('gdrive-avatar').textContent = '☁️';
+  document.getElementById('gdrive-name').textContent = 'Google Drive não conectado';
+  document.getElementById('gdrive-email').textContent = 'Conecte para fazer backup automático das suas notas';
+  document.getElementById('btn-gdrive-connect').style.display = 'flex';
+  document.getElementById('btn-gdrive-logout').style.display = 'none';
+  document.getElementById('btn-enviar-drive').style.display = 'none';
+  document.getElementById('drive-link-box').classList.remove('show');
+}
+
+/* ===== UPLOAD ===== */
+function escapeDriveQuery(s) { return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'"); }
+
+async function enviarParaDrive() {
+  if (!driveAccessToken) {
+    if (tokenClient) tokenClient.requestAccessToken({ prompt: '' });
+    else toast('Conecte sua conta Google primeiro.', false);
+    return;
+  }
+  if (!notas.length && !despesas.length) { toast('Nenhum dado para enviar.', false); return; }
+
+  const prog = document.getElementById('drive-progress');
+  prog.classList.add('show');
+  document.getElementById('drive-link-box').classList.remove('show');
+
+  try {
+    const agora = new Date();
+    const nomePasta = `NotasFacil — ${MESES_PT[agora.getMonth()]} ${agora.getFullYear()}`;
+
+    setProgresso('pasta', 0, 'Criando...');
+    const rootId = await encontrarOuCriarPasta('NotasFacil — Backup', null);
+    const mesId = await encontrarOuCriarPasta(nomePasta, rootId);
+    setProgresso('pasta', 100, '✓ Pronta', 'ok');
+
+    setProgresso('pdf', 0, 'Enviando...');
+    const notasMes = notas.filter(n => {
+      const d = new Date(n.data);
+      return d.getMonth() === agora.getMonth() && d.getFullYear() === agora.getFullYear();
+    });
+    const pdfPastaId = await encontrarOuCriarPasta('Notas PDF', mesId);
+    for (let i = 0; i < notasMes.length; i++) {
+      await uploadNotaPDF(notasMes[i], pdfPastaId);
+      setProgresso('pdf', Math.round(((i + 1) / Math.max(notasMes.length, 1)) * 100), `${i + 1}/${notasMes.length}`);
+    }
+    setProgresso('pdf', 100, notasMes.length ? '✓ Enviados' : '✓ Sem notas', 'ok');
+
+    setProgresso('excel', 0, 'Gerando...');
+    await uploadExcelDrive(mesId);
+    setProgresso('excel', 100, '✓ Enviado', 'ok');
+
+    setProgresso('fotos', 0, 'Verificando...');
+    const fotosPastaId = await encontrarOuCriarPasta('Comprovantes', mesId);
+    let totalFotos = 0;
+    for (const d of despesas) totalFotos += (d.fotos || []).length;
+    if (totalFotos === 0) {
+      setProgresso('fotos', 100, '✓ Sem fotos', 'ok');
+    } else {
+      let enviadas = 0;
+      for (const d of despesas) {
+        for (let fi = 0; fi < (d.fotos || []).length; fi++) {
+          const nomeArq = `${d.desc.replace(/[^\p{L}\p{N}]+/gu, '_')}_${d.data}_${fi + 1}.jpg`;
+          await uploadBase64(d.fotos[fi], nomeArq, 'image/jpeg', fotosPastaId);
+          enviadas++;
+          setProgresso('fotos', Math.round((enviadas / totalFotos) * 100), `${enviadas}/${totalFotos}`);
+        }
+      }
+      setProgresso('fotos', 100, '✓ Enviadas', 'ok');
+    }
+
+    const linkBox = document.getElementById('drive-link-box');
+    document.getElementById('drive-folder-link').href = 'https://drive.google.com/drive/folders/' + encodeURIComponent(mesId);
+    linkBox.classList.add('show');
+  } catch (e) {
+    toast('Falha no envio ao Drive: ' + e.message, false);
+    setProgresso('pasta', 0, 'Erro', 'err');
+  }
+}
+
+async function encontrarOuCriarPasta(nome, parentId) {
+  const nomeSafe = escapeDriveQuery(nome);
+  const q = `mimeType='application/vnd.google-apps.folder' and name='${nomeSafe}' and trashed=false${parentId ? ` and '${escapeDriveQuery(parentId)}' in parents` : ''}`;
+  const busca = await driveAPI('GET', `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name)`);
+  if (busca.files && busca.files.length) return busca.files[0].id;
+  const meta = { name: nome, mimeType: 'application/vnd.google-apps.folder' };
+  if (parentId) meta.parents = [parentId];
+  const criada = await driveAPI('POST', 'https://www.googleapis.com/drive/v3/files', meta);
+  return criada.id;
+}
+
+async function uploadNotaPDF(nota, pastaId) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+  const verde = [0, 163, 122];
+  doc.setFillColor(...verde);
+  doc.rect(0, 0, 210, 28, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(16); doc.setFont('helvetica', 'bold');
+  doc.text('Notas$facil', 14, 12);
+  doc.setFontSize(9); doc.setFont('helvetica', 'normal');
+  doc.text('NOTA DE SERVICO', 14, 20);
+  doc.setFontSize(12); doc.setFont('helvetica', 'bold');
+  doc.text(nota.numero, 196, 12, { align: 'right' });
+  doc.setFontSize(9); doc.setFont('helvetica', 'normal');
+  doc.text(new Date(nota.data).toLocaleDateString('pt-BR'), 196, 20, { align: 'right' });
+  doc.setTextColor(13, 17, 23); doc.setFontSize(9);
+  doc.text('Prestador: ' + nota.prest, 14, 36);
+  doc.text('Cliente: ' + nota.cliente, 14, 43);
+  const lines = doc.splitTextToSize(nota.descricao, 180);
+  doc.text(lines, 14, 52);
+  let y = 52 + lines.length * 5 + 10;
+  doc.setFillColor(240, 255, 249); doc.setDrawColor(...verde);
+  doc.roundedRect(14, y, 182, 36, 3, 3, 'FD');
+  doc.setTextColor(80, 80, 80);
+  y += 8;
+  doc.text('Valor Bruto: ' + formatBRL(nota.bruto), 18, y); y += 6;
+  doc.text('ISS: — ' + formatBRL(nota.iss) + '   IRRF: — ' + formatBRL(nota.ir) + '   INSS: — ' + formatBRL(nota.inss), 18, y); y += 8;
+  doc.setFont('helvetica', 'bold'); doc.setTextColor(...verde); doc.setFontSize(11);
+  doc.text('LIQUIDO: ' + formatBRL(nota.liquido), 18, y);
+  const pdfBlob = doc.output('blob');
+  await uploadBlob(pdfBlob, nota.numero + '_' + nota.cliente.replace(/[^\p{L}\p{N}]+/gu, '_') + '.pdf', 'application/pdf', pastaId);
+}
+
+async function uploadExcelDrive(pastaId) {
+  const data = notas.map(n => ({
+    'Número': n.numero,
+    'Data': new Date(n.data).toLocaleDateString('pt-BR'),
+    'Cliente': n.cliente,
+    'Prestador': n.prest,
+    'Descrição': n.descricao,
+    'Valor Bruto (R$)': n.bruto.toFixed(2),
+    'ISS (R$)': n.iss.toFixed(2),
+    'IRRF (R$)': n.ir.toFixed(2),
+    'INSS (R$)': n.inss.toFixed(2),
+    'Líquido (R$)': n.liquido.toFixed(2),
+    'Pagamento': n.pagamento
+  }));
+  const ws = XLSX.utils.json_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Notas');
+  const xlsxArr = XLSX.write(wb, { type: 'array', bookType: 'xlsx' });
+  const blob = new Blob([xlsxArr], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const agora = new Date();
+  await uploadBlob(blob, `historico_${MESES_PT[agora.getMonth()]}_${agora.getFullYear()}.xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', pastaId);
+}
+
+async function uploadBase64(dataUrl, nome, mime, pastaId) {
+  const res = await fetch(dataUrl);
+  const blob = await res.blob();
+  await uploadBlob(blob, nome, mime, pastaId);
+}
+
+async function uploadBlob(blob, nome, mime, pastaId) {
+  const meta = JSON.stringify({ name: nome, parents: [pastaId] });
+  const form = new FormData();
+  form.append('metadata', new Blob([meta], { type: 'application/json' }));
+  form.append('file', blob);
+  const r = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+    method: 'POST',
+    headers: { Authorization: 'Bearer ' + driveAccessToken },
+    body: form
+  });
+  if (!r.ok) throw new Error('upload HTTP ' + r.status);
+}
+
+async function driveAPI(method, url, body) {
+  const opts = {
+    method,
+    headers: { Authorization: 'Bearer ' + driveAccessToken, 'Content-Type': 'application/json' }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(url, opts);
+  if (r.status === 401) { driveAccessToken = null; throw new Error('Sessão Google expirada — conecte novamente.'); }
+  return r.json();
+}
+
+function setProgresso(etapa, pct, texto, estado) {
+  document.getElementById('bar-' + etapa).style.width = pct + '%';
+  const st = document.getElementById('status-' + etapa);
+  st.textContent = texto;
+  st.className = 'progress-status ' + (estado === 'ok' ? 'status-ok' : estado === 'err' ? 'status-err' : 'status-wait');
+  if (estado === 'ok') document.getElementById('icon-' + etapa).textContent = '✅';
+  if (estado === 'err') document.getElementById('icon-' + etapa).textContent = '❌';
+}
+
+window.onGapiLoaded = onGapiLoaded;
+window.onGisLoaded = onGisLoaded;
+function nfInitDrive() {
+  if (window.gapi) onGapiLoaded();
+  if (window.google?.accounts) onGisLoaded();
+  setTimeout(() => {
+    if (window.gapi && !gapiReady) onGapiLoaded();
+    if (window.google?.accounts?.oauth2 && !gisReady) onGisLoaded();
+  }, 2000);
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', nfInitDrive);
+} else {
+  nfInitDrive();
+}
+
+</script>
+<script>
+/* =========================================================================
+ * Notas$fácil — events.js
+ * Roteador central de eventos via data-action.
+ * A CSP do app bloqueia handlers inline (onclick=...), o que elimina uma
+ * classe inteira de ataques XSS — todos os cliques passam por aqui.
+ * ========================================================================= */
+'use strict';
+
+let _nfEventsBound = false;
+
+function nfBindEvents() {
+  if (_nfEventsBound) return; // garante registro único (evita cliques duplicados)
+  _nfEventsBound = true;
+
+  document.body.addEventListener('click', (e) => {
+    const elBtn = e.target.closest('[data-action]');
+    if (!elBtn) return;
+    const a = elBtn.dataset.action;
+
+    switch (a) {
+      case 'ir-inicio': showPage('landing'); break;
+      case 'abrir-app': abrirApp(); break;
+      case 'criar-cofre': criarCofre(); break;
+      case 'destravar': destravarCofre(); break;
+      case 'travar': travarCofre(); break;
+      case 'view': showView(elBtn.dataset.view, elBtn); break;
+      case 'limpar-assinatura': limparAssinatura(); break;
+      case 'gerar-nota': gerarNota(); break;
+      case 'limpar-form': limparFormulario(); break;
+      case 'baixar-pdf': baixarPDF(); break;
+      case 'nova-nota': novaNotaAposGerar(); break;
+      case 'exportar-excel': exportarExcel(); break;
+      case 'drive-login': iniciarLoginGoogle(); break;
+      case 'drive-logout': deslogarGoogle(); break;
+      case 'drive-enviar': enviarParaDrive(); break;
+      case 'grafico': trocarGrafico(elBtn.dataset.tipo, elBtn); break;
+      case 'abrir-upload': document.getElementById('fotoInput').click(); break;
+      case 'salvar-despesa': salvarDespesa(); break;
+      case 'salvar-perfil': salvarPerfil(); break;
+      case 'assinar-plano': assinarPlano(); break;
+      case 'fechar-modal': fecharModal(elBtn.dataset.modal); break;
+      case 'modal-baixar-pdf': fecharModal('modalSucesso'); baixarPDF(); break;
+    }
+  });
+
+  // Máscaras e recálculo de impostos
+  document.body.addEventListener('input', (e) => {
+    const t = e.target;
+    if (t.dataset && t.dataset.mask === 'cpf') mascaraCPF(t);
+    if (t.dataset && t.dataset.calc) calcularImpostos();
+  });
+  document.body.addEventListener('change', (e) => {
+    const t = e.target;
+    if (t.dataset && t.dataset.calc) calcularImpostos();
+    if (t.id === 'fotoInput') adicionarFoto(t);
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', nfBindEvents);
+} else {
+  nfBindEvents();
+}
+
+</script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Notas<span style="color:var(--verde)">$</span>fácil</div>
+  <div class="nav-actions">
+    <button class="btn-ghost" data-action="ir-inicio">Início</button>
+    <button class="btn-primary" data-action="abrir-app">Entrar no App →</button>
+  </div>
+</nav>
+
+<!-- ===== LANDING ===== -->
+<div id="landing" class="page active">
+  <section class="hero">
+    <div class="badge">✦ Para autônomos e MEIs</div>
+    <h1>Sua nota de serviço<br><span class="accent">em segundos.</span></h1>
+    <p>Emita notas fiscais de serviço profissionais, calcule impostos automaticamente (ISS, IR, INSS), assine digitalmente e organize suas finanças — tudo num só lugar.</p>
+    <div class="hero-actions">
+      <button class="btn-hero" data-action="abrir-app">Testar grátis por 2 dias →</button>
+    </div>
+    <div class="trial-note">Depois apenas <strong>R$ 15,99/mês</strong> · Sem surpresas · Cancele quando quiser</div>
+  </section>
+
+  <section class="features">
+    <div class="section-label">Funcionalidades</div>
+    <div class="section-title">Tudo que você precisa</div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🧾</div>
+        <h3>Nota de Serviço Profissional</h3>
+        <p>Gere PDFs com aparência profissional, numeração automática e todos os campos exigidos para autônomos.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧮</div>
+        <h3>Cálculo Automático de Impostos</h3>
+        <p>ISS, IRPF na fonte, INSS do autônomo — calculados automaticamente pelas alíquotas vigentes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✍️</div>
+        <h3>Assinatura Digital</h3>
+        <p>Assine digitalmente direto na tela. A assinatura é incorporada ao PDF final enviado ao cliente.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📸</div>
+        <h3>Anexo de Comprovantes</h3>
+        <p>Fotografe ou anexe recibos e comprovantes de compras. Organize suas despesas com facilidade.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Fluxo de Caixa Visual</h3>
+        <p>Gráficos simples de receitas e despesas por período. Veja sua saúde financeira de relance.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📥</div>
+        <h3>Exportação Fácil</h3>
+        <p>Baixe o histórico em Excel ou envie direto para o Google Drive com um clique.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing">
+    <div class="section-label">Plano</div>
+    <div class="section-title">Simples e transparente</div>
+    <div class="price-card">
+      <div class="price-badge">Plano Completo</div>
+      <div class="price-amount">
+        <span class="price-currency">R$</span>
+        <span class="price-value">15</span>
+        <span class="price-currency">,99</span>
+      </div>
+      <div class="price-period">por mês · cobrado mensalmente</div>
+      <ul class="price-features">
+        <li><span class="check">✓</span> Notas de serviço ilimitadas</li>
+        <li><span class="check">✓</span> Cálculo automático de impostos (ISS, IR, INSS)</li>
+        
+        <li><span class="check">✓</span> Assinatura digital</li>
+        <li><span class="check">✓</span> Anexo de comprovantes</li>
+        <li><span class="check">✓</span> Gráficos de fluxo de caixa</li>
+        <li><span class="check">✓</span> Exportação para Excel</li>
+        <li><span class="check">✓</span> Envio para Google Drive</li>
+        <li><span class="check">✓</span> Suporte por WhatsApp</li>
+      </ul>
+      <button class="btn-hero" style="width:100%; font-size:15px;" data-action="abrir-app">Começar teste grátis →</button>
+      <div class="trial-pill">🎁 <strong>2 dias grátis</strong> para testar tudo sem cartão. Cancele a qualquer momento.</div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== LOCK SCREEN (COFRE) ===== -->
+<div id="lock" class="page">
+  <div class="lock-card">
+    <!-- SETUP (primeiro acesso) -->
+    <div id="lock-setup" style="display:none">
+      <div class="lock-icon">🔐</div>
+      <h2>Crie seu acesso</h2>
+      <p>Defina um PIN de pelo menos 6 dígitos para proteger seus dados neste dispositivo.</p>
+      <input type="password" id="pin-new" inputmode="numeric" autocomplete="new-password" maxlength="32" placeholder="••••••">
+      <input type="password" id="pin-new2" inputmode="numeric" autocomplete="new-password" maxlength="32" placeholder="confirme o PIN">
+      <button class="btn-hero" data-action="criar-cofre">Criar acesso</button>
+    </div>
+    <!-- UNLOCK -->
+    <div id="lock-unlock" style="display:none">
+      <div class="lock-icon">🔒</div>
+      <h2>Bem-vindo de volta</h2>
+      <p>Digite seu PIN para acessar suas notas.</p>
+      <input type="password" id="pin-unlock" inputmode="numeric" autocomplete="current-password" maxlength="32" placeholder="••••••">
+      <button class="btn-hero" id="btn-unlock" data-action="destravar">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app" class="page">
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-title">Menu</div>
+      <button class="sidebar-btn active" data-action="view" data-view="emitir"><span class="sidebar-icon">🧾</span> Emitir Nota</button>
+      <button class="sidebar-btn" data-action="view" data-view="historico"><span class="sidebar-icon">📋</span> Histórico</button>
+      <button class="sidebar-btn" data-action="view" data-view="financas"><span class="sidebar-icon">📊</span> Finanças</button>
+      <button class="sidebar-btn" data-action="view" data-view="comprovantes"><span class="sidebar-icon">📸</span> Comprovantes</button>
+      <div class="sidebar-title" style="margin-top:12px">Conta</div>
+      <button class="sidebar-btn" data-action="view" data-view="perfil"><span class="sidebar-icon">👤</span> Meu Perfil</button>
+      <button class="sidebar-btn" data-action="travar"><span class="sidebar-icon">🔒</span> Bloquear App</button>
+      <div style="flex:1"></div>
+      <div class="sidebar-footer">
+        <div class="trial-title">Teste Grátis</div>
+        <div id="trial-badge">verificando…</div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <!-- VIEW: EMITIR -->
+      <div id="view-emitir" class="view active">
+        <div class="page-header">
+          <h2>Emitir Nota de Serviço</h2>
+          <p>Preencha os dados abaixo. Os campos marcados com <span class="required">*</span> são obrigatórios.</p>
+        </div>
+
+        <div class="form-section">
+          <h3>📋 Dados do Prestador (Você)</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="prest_nome">Nome Completo <span class="required">*</span></label>
+              <input type="text" id="prest_nome" maxlength="120" placeholder="Seu nome completo">
+            </div>
+            <div class="form-group">
+              <label for="prest_cpf">CPF <span class="required">*</span></label>
+              <input type="text" id="prest_cpf" placeholder="000.000.000-00" maxlength="14" data-mask="cpf">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="prest_endereco">Endereço</label>
+              <input type="text" id="prest_endereco" maxlength="200" placeholder="Rua, número, bairro">
+            </div>
+            <div class="form-group">
+              <label for="prest_cidade">Cidade/UF</label>
+              <input type="text" id="prest_cidade" maxlength="80" placeholder="Ex: São Paulo / SP">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="prest_tel">Telefone</label>
+              <input type="text" id="prest_tel" maxlength="20" placeholder="(00) 00000-0000">
+            </div>
+            <div class="form-group">
+              <label for="prest_email">E-mail</label>
+              <input type="email" id="prest_email" maxlength="120" placeholder="seu@email.com">
+            </div>
+            <div class="form-group">
+              <label for="prest_tipo">Tipo de Registro</label>
+              <select id="prest_tipo">
+                <option value="autonomo">Autônomo (CPF)</option>
+                <option value="mei">MEI</option>
+                <option value="mei_cnpj">MEI com CNPJ</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row" id="cnpj-row" style="display:none">
+            <div class="form-group">
+              <label for="prest_cnpj">CNPJ</label>
+              <input type="text" id="prest_cnpj" maxlength="18" placeholder="00.000.000/0001-00">
+            </div>
+            <div class="form-group">
+              <label for="prest_empresa">Nome Empresarial</label>
+              <input type="text" id="prest_empresa" maxlength="150" placeholder="Nome da empresa">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>🏢 Dados do Tomador (Cliente)</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tom_nome">Nome / Razão Social <span class="required">*</span></label>
+              <input type="text" id="tom_nome" maxlength="150" placeholder="Nome do cliente ou empresa">
+            </div>
+            <div class="form-group">
+              <label for="tom_doc">CPF ou CNPJ</label>
+              <input type="text" id="tom_doc" maxlength="18" placeholder="000.000.000-00 ou 00.000.000/0001-00">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tom_endereco">Endereço</label>
+              <input type="text" id="tom_endereco" maxlength="200" placeholder="Endereço completo">
+            </div>
+            <div class="form-group">
+              <label for="tom_cidade">Cidade/UF</label>
+              <input type="text" id="tom_cidade" maxlength="80" placeholder="Ex: Rio de Janeiro / RJ">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tom_email">E-mail do Cliente</label>
+              <input type="email" id="tom_email" maxlength="120" placeholder="cliente@email.com">
+            </div>
+            <div class="form-group">
+              <label for="tom_tel">Telefone</label>
+              <input type="text" id="tom_tel" maxlength="20" placeholder="(00) 00000-0000">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>🔧 Dados do Serviço</h3>
+          <div class="form-row">
+            <div class="form-group" style="grid-column: 1/-1">
+              <label for="srv_descricao">Descrição do Serviço <span class="required">*</span></label>
+              <textarea id="srv_descricao" maxlength="2000" placeholder="Descreva detalhadamente o serviço prestado..."></textarea>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="srv_codigo">Código do Serviço (LC 116)</label>
+              <input type="text" id="srv_codigo" maxlength="10" placeholder="Ex: 17.01">
+            </div>
+            <div class="form-group">
+              <label for="srv_data">Data da Prestação <span class="required">*</span></label>
+              <input type="date" id="srv_data">
+            </div>
+            <div class="form-group">
+              <label for="srv_valor">Valor Bruto (R$) <span class="required">*</span></label>
+              <input type="number" id="srv_valor" placeholder="0,00" step="0.01" min="0" data-calc="1">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="srv_municipio">Município de Prestação</label>
+              <input type="text" id="srv_municipio" maxlength="80" placeholder="Ex: Rio de Janeiro">
+            </div>
+            <div class="form-group">
+              <label for="srv_pagamento">Forma de Pagamento</label>
+              <select id="srv_pagamento">
+                <option value="pix">PIX</option>
+                <option value="transferencia">Transferência Bancária</option>
+                <option value="dinheiro">Dinheiro</option>
+                <option value="cheque">Cheque</option>
+                <option value="cartao">Cartão</option>
+                <option value="boleto">Boleto</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="nota_num">Nº da Nota</label>
+              <input type="text" id="nota_num" placeholder="Auto" readonly style="background:rgba(0,200,150,0.05);">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>🧮 Configuração de Impostos</h3>
+          <div class="info-box" style="margin-bottom:16px">
+            <strong>Regras para Autônomos:</strong> O IRRF incide sobre serviços prestados a pessoas jurídicas. O ISS é municipal (2% a 5%). O INSS para contribuinte individual é de 20% (opção de 11% com restrições).
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="aliq_iss">Alíquota ISS (%)</label>
+              <input type="number" id="aliq_iss" value="5" min="2" max="5" step="0.5" data-calc="1">
+              <small>2% a 5% conforme município</small>
+            </div>
+            <div class="form-group">
+              <label for="reter_ir">Reter IRRF?</label>
+              <select id="reter_ir" data-calc="1">
+                <option value="nao">Não (PF ou isento)</option>
+                <option value="sim">Sim (tomador PJ obrigado)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="aliq_inss">Contribuição INSS</label>
+              <select id="aliq_inss" data-calc="1">
+                <option value="20">20% — Contribuinte Individual Padrão</option>
+                <option value="11">11% — Plano Simplificado</option>
+                <option value="5">5% — MEI (quando aplicável)</option>
+                <option value="0">Não incluir INSS nesta nota</option>
+              </select>
+            </div>
+          </div>
+          <div id="calculoResult" class="calc-result">
+            <div class="calc-title">Resumo Financeiro</div>
+            <div class="calc-row"><span class="label">Valor Bruto do Serviço</span><span class="valor" id="res_bruto">R$ 0,00</span></div>
+            <div class="calc-row"><span class="label">ISS retido <span id="res_iss_pct" class="tag-imposto tag-iss"></span></span><span class="valor" style="color:#FFC832" id="res_iss">— R$ 0,00</span></div>
+            <div class="calc-row"><span class="label">IRRF retido <span id="res_ir_pct" class="tag-imposto tag-ir"></span></span><span class="valor" style="color:#64B4FF" id="res_ir">— R$ 0,00</span></div>
+            <div class="calc-row"><span class="label">INSS (sua contribuição) <span id="res_inss_pct" class="tag-imposto tag-inss"></span></span><span class="valor" style="color:#C864FF" id="res_inss">— R$ 0,00</span></div>
+            <div class="calc-row total"><span class="label">💰 Valor Líquido (que você recebe)</span><span class="valor" id="res_liquido">R$ 0,00</span></div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>✍️ Assinatura Digital</h3>
+          <p style="font-size:13px;color:var(--cinza-claro);margin-bottom:14px">Assine no campo abaixo. A assinatura será incluída no PDF da nota.</p>
+          <div class="sig-canvas-wrap"><canvas id="sigCanvas" width="540" height="120"></canvas></div>
+          <div style="display:flex;gap:10px;margin-top:10px">
+            <button class="btn-sm" data-action="limpar-assinatura">🗑 Limpar</button>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-action btn-gerar" data-action="gerar-nota">📄 Gerar PDF da Nota</button>
+          <button class="btn-action btn-outline" data-action="limpar-form">🔄 Limpar Formulário</button>
+        </div>
+
+        <div id="pdfPreview">
+          <div class="pdf-header-nota">
+            <div>
+              <div class="pdf-title">Notas<span style="color:#00C896">$</span>fácil</div>
+              <div class="pdf-num">RECIBO / NOTA DE SERVIÇO</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:20px;font-weight:700;color:#007A5A" id="pdf_num_nota"></div>
+              <div style="font-size:12px;color:#666" id="pdf_data_emissao"></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:16px">
+            <div class="pdf-section">
+              <div class="pdf-section-title">Prestador de Serviços</div>
+              <div class="pdf-field"><div class="pdf-label">Nome</div><div class="pdf-value" id="pdf_prest_nome"></div></div>
+              <div class="pdf-field"><div class="pdf-label">CPF</div><div class="pdf-value" id="pdf_prest_cpf"></div></div>
+              <div class="pdf-field"><div class="pdf-label">Endereço</div><div class="pdf-value" id="pdf_prest_end"></div></div>
+              <div class="pdf-field"><div class="pdf-label">Contato</div><div class="pdf-value" id="pdf_prest_contato"></div></div>
+            </div>
+            <div class="pdf-section">
+              <div class="pdf-section-title">Tomador de Serviços</div>
+              <div class="pdf-field"><div class="pdf-label">Nome</div><div class="pdf-value" id="pdf_tom_nome"></div></div>
+              <div class="pdf-field"><div class="pdf-label">CPF/CNPJ</div><div class="pdf-value" id="pdf_tom_doc"></div></div>
+              <div class="pdf-field"><div class="pdf-label">Endereço</div><div class="pdf-value" id="pdf_tom_end"></div></div>
+              <div class="pdf-field"><div class="pdf-label">Contato</div><div class="pdf-value" id="pdf_tom_contato"></div></div>
+            </div>
+          </div>
+          <div class="pdf-section">
+            <div class="pdf-section-title">Descrição do Serviço</div>
+            <div id="pdf_descricao" style="font-size:13px;color:#222;line-height:1.6;padding:8px;background:#fafafa;border-radius:6px"></div>
+          </div>
+          <div style="display:flex;gap:16px;margin-top:12px;margin-bottom:8px;flex-wrap:wrap">
+            <div class="pdf-field"><div class="pdf-label">Código Serviço (LC 116)</div><div class="pdf-value" id="pdf_codigo"></div></div>
+            <div class="pdf-field"><div class="pdf-label">Data da Prestação</div><div class="pdf-value" id="pdf_data_srv"></div></div>
+            <div class="pdf-field"><div class="pdf-label">Município</div><div class="pdf-value" id="pdf_municipio"></div></div>
+            <div class="pdf-field"><div class="pdf-label">Forma de Pagamento</div><div class="pdf-value" id="pdf_pagamento"></div></div>
+          </div>
+          <div class="pdf-total-box">
+            <div class="pdf-impostos">
+              <div class="pdf-tax-row"><span>Valor Bruto do Serviço</span><span id="pdf_bruto"></span></div>
+              <div class="pdf-tax-row"><span>ISS retido (<span id="pdf_iss_pct"></span>%)</span><span id="pdf_iss_val" style="color:#CC8800"></span></div>
+              <div class="pdf-tax-row"><span>IRRF retido</span><span id="pdf_ir_val" style="color:#1155CC"></span></div>
+              <div class="pdf-tax-row"><span>INSS (contribuição autônomo)</span><span id="pdf_inss_val" style="color:#6600CC"></span></div>
+            </div>
+            <div class="pdf-total-final"><span>VALOR LÍQUIDO A RECEBER</span><span id="pdf_liquido"></span></div>
+          </div>
+          <div id="pdf_assinatura_box" style="margin-top:20px;text-align:right">
+            <img id="pdf_assinatura_img" alt="Assinatura" style="max-height:60px;border-bottom:1px solid #999">
+            <div style="font-size:11px;color:#888;margin-top:4px" id="pdf_prest_nome2"></div>
+          </div>
+          <div style="margin-top:20px;padding-top:16px;border-top:1px solid #eee;font-size:10px;color:#999;text-align:center">
+            Documento gerado por Notas$fácil · Este recibo comprova a prestação de serviço conforme descrição acima.
+          </div>
+        </div>
+
+        <div id="pdf-actions" style="display:none;margin-top:16px">
+          <div class="form-actions">
+            <button class="btn-action btn-gerar" data-action="baixar-pdf">⬇️ Baixar PDF</button>
+            <button class="btn-action btn-outline" data-action="nova-nota">✚ Nova Nota</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW: HISTÓRICO -->
+      <div id="view-historico" class="view">
+        <div class="page-header">
+          <h2>Histórico de Notas</h2>
+          <p>Todas as notas emitidas na sua conta.</p>
+        </div>
+
+        <div id="gdrive-bar" class="gdrive-bar">
+          <div class="gdrive-avatar" id="gdrive-avatar">☁️</div>
+          <div class="gdrive-info">
+            <strong id="gdrive-name">Google Drive não conectado</strong>
+            <span id="gdrive-email">Conecte para fazer backup das suas notas</span>
+          </div>
+          <button class="btn-drive btn-drive-connect" id="btn-gdrive-connect" data-action="drive-login">
+            <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            Conectar com Google
+          </button>
+          <button class="btn-drive btn-drive-logout" id="btn-gdrive-logout" data-action="drive-logout" style="display:none">Desconectar</button>
+        </div>
+
+        <div id="drive-progress" class="drive-progress">
+          <h4>📤 Enviando para o Google Drive...</h4>
+          <div class="progress-item"><span class="progress-icon" id="icon-pasta">📁</span><span class="progress-label">Criando pasta do mês</span><div class="progress-bar-wrap"><div class="progress-bar-fill" id="bar-pasta"></div></div><span class="progress-status status-wait" id="status-pasta">Aguardando</span></div>
+          <div class="progress-item"><span class="progress-icon" id="icon-pdf">📄</span><span class="progress-label">Enviando PDFs das notas</span><div class="progress-bar-wrap"><div class="progress-bar-fill" id="bar-pdf"></div></div><span class="progress-status status-wait" id="status-pdf">Aguardando</span></div>
+          <div class="progress-item"><span class="progress-icon" id="icon-excel">📊</span><span class="progress-label">Enviando histórico Excel</span><div class="progress-bar-wrap"><div class="progress-bar-fill" id="bar-excel"></div></div><span class="progress-status status-wait" id="status-excel">Aguardando</span></div>
+          <div class="progress-item"><span class="progress-icon" id="icon-fotos">📸</span><span class="progress-label">Enviando comprovantes</span><div class="progress-bar-wrap"><div class="progress-bar-fill" id="bar-fotos"></div></div><span class="progress-status status-wait" id="status-fotos">Aguardando</span></div>
+        </div>
+
+        <div id="drive-link-box" class="drive-link-box">
+          <p>✅ Tudo enviado! Acesse sua pasta no Google Drive:</p>
+          <a id="drive-folder-link" href="#" target="_blank" rel="noopener noreferrer">🔗 Abrir pasta no Drive</a>
+        </div>
+
+        <div class="form-actions" style="margin-bottom:20px">
+          <button class="btn-action btn-gerar" data-action="exportar-excel">📊 Baixar Excel</button>
+          <button class="btn-action btn-outline" id="btn-enviar-drive" data-action="drive-enviar" style="display:none">☁️ Enviar tudo ao Google Drive</button>
+        </div>
+
+        <div id="notas-lista" class="notas-list"></div>
+      </div>
+
+      <!-- VIEW: FINANÇAS -->
+      <div id="view-financas" class="view">
+        <div class="page-header">
+          <h2>Fluxo de Caixa</h2>
+          <p>Visão geral das suas finanças.</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Receita Total</div><div class="stat-value green" id="stat-receita">R$ 0</div><div class="stat-sub">Este mês</div></div>
+          <div class="stat-card"><div class="stat-label">Impostos Retidos</div><div class="stat-value" id="stat-impostos" style="color:#FFC832">R$ 0</div><div class="stat-sub">ISS + IRRF</div></div>
+          <div class="stat-card"><div class="stat-label">INSS Pago</div><div class="stat-value" id="stat-inss" style="color:#C864FF">R$ 0</div><div class="stat-sub">Contribuição própria</div></div>
+          <div class="stat-card"><div class="stat-label">Líquido Recebido</div><div class="stat-value green" id="stat-liquido">R$ 0</div><div class="stat-sub">Após deduções</div></div>
+          <div class="stat-card"><div class="stat-label">Notas Emitidas</div><div class="stat-value" id="stat-qtd">0</div><div class="stat-sub">Total</div></div>
+        </div>
+        <div class="tab-row">
+          <button class="tab-btn active" data-action="grafico" data-tipo="mensal">Mensal</button>
+          <button class="tab-btn" data-action="grafico" data-tipo="anual">Anual</button>
+        </div>
+        <div class="chart-container"><h3>Receitas vs Deduções</h3><canvas id="chartFluxo" height="280"></canvas></div>
+        <div class="chart-container"><h3>Composição das Deduções</h3><canvas id="chartPizza" height="220"></canvas></div>
+      </div>
+
+      <!-- VIEW: COMPROVANTES -->
+      <div id="view-comprovantes" class="view">
+        <div class="page-header">
+          <h2>Comprovantes de Despesas</h2>
+          <p>Fotografe ou anexe recibos e notas de compras para organizar suas finanças.</p>
+        </div>
+        <div class="form-section">
+          <h3>📸 Adicionar Comprovante</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="desp_desc">Descrição da Despesa</label>
+              <input type="text" id="desp_desc" maxlength="150" placeholder="Ex: Material de escritório">
+            </div>
+            <div class="form-group">
+              <label for="desp_valor">Valor (R$)</label>
+              <input type="number" id="desp_valor" placeholder="0,00" step="0.01" min="0">
+            </div>
+            <div class="form-group">
+              <label for="desp_data">Data</label>
+              <input type="date" id="desp_data">
+            </div>
+            <div class="form-group">
+              <label for="desp_cat">Categoria</label>
+              <select id="desp_cat">
+                <option value="material">Material/Equipamento</option>
+                <option value="transporte">Transporte</option>
+                <option value="alimentacao">Alimentação</option>
+                <option value="software">Software/Serviços</option>
+                <option value="outros">Outros</option>
+              </select>
+            </div>
+          </div>
+          <div class="upload-area" data-action="abrir-upload">
+            <div class="upload-icon">📷</div>
+            <p>Clique para fotografar ou selecionar a imagem do comprovante</p>
+            <p style="font-size:12px;margin-top:6px">JPG, PNG, WEBP ou PDF · máx. 4 MB</p>
+            <input type="file" id="fotoInput" accept="image/jpeg,image/png,image/webp,.pdf" style="display:none">
+          </div>
+          <div id="foto-grid" class="foto-grid"></div>
+          <div class="form-actions" style="margin-top:16px">
+            <button class="btn-action btn-gerar" data-action="salvar-despesa">💾 Salvar Comprovante</button>
+          </div>
+        </div>
+        <div id="despesas-lista"></div>
+      </div>
+
+      <!-- VIEW: PERFIL -->
+      <div id="view-perfil" class="view">
+        <div class="page-header">
+          <h2>Meu Perfil</h2>
+          <p>Configure seus dados padrão para preenchimento automático das notas.</p>
+        </div>
+        <div class="form-section">
+          <h3>👤 Dados Pessoais</h3>
+          <div class="form-row">
+            <div class="form-group"><label for="perfil_nome">Nome Completo</label><input type="text" id="perfil_nome" maxlength="120" placeholder="Seu nome"></div>
+            <div class="form-group"><label for="perfil_cpf">CPF</label><input type="text" id="perfil_cpf" maxlength="14" placeholder="000.000.000-00" data-mask="cpf"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label for="perfil_email">E-mail</label><input type="email" id="perfil_email" maxlength="120" placeholder="seu@email.com"></div>
+            <div class="form-group"><label for="perfil_tel">Telefone</label><input type="text" id="perfil_tel" maxlength="20" placeholder="(00) 00000-0000"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group" style="grid-column:1/-1"><label for="perfil_end">Endereço</label><input type="text" id="perfil_end" maxlength="200" placeholder="Rua, número, bairro, cidade/UF"></div>
+          </div>
+          <button class="btn-action btn-gerar" data-action="salvar-perfil">💾 Salvar Perfil</button>
+        </div>
+        <div class="form-section">
+          <h3>💳 Plano</h3>
+          <div class="info-box" id="plano-info">
+            <strong>Status do plano:</strong> <span id="plano-status">verificando…</span><br>
+            Plano mensal: <strong>R$ 15,99</strong> · Cancele a qualquer momento.
+          </div>
+          <div class="form-actions" style="margin-top:16px">
+            <button class="btn-action btn-gerar" data-action="assinar-plano">🚀 Assinar Plano — R$ 15,99/mês</button>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- MODAL SUCESSO -->
+<div id="modalSucesso" class="modal-overlay">
+  <div class="modal">
+    <button class="modal-close" data-action="fechar-modal" data-modal="modalSucesso">✕</button>
+    <div style="font-size:48px;text-align:center;margin-bottom:16px">✅</div>
+    <h3 style="text-align:center">Nota Gerada!</h3>
+    <p style="text-align:center">Sua nota de serviço foi gerada com sucesso. Clique em "Baixar PDF" para salvar o arquivo.</p>
+    <button class="btn-action btn-gerar" style="width:100%" data-action="modal-baixar-pdf">⬇️ Baixar PDF da Nota</button>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0aa4a7adf8b2a36',t:'MTc4MTI4MjM1OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
