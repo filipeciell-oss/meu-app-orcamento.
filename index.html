@@ -1,170 +1,347 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="referrer" content="no-referrer">
-<meta name="robots" content="noindex,nofollow">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
-<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Segurança: CSP para bloquear scripts maliciosos -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://sua-api-n8n-ou-servidor.com;">
+    
+    <title>Notas$fácil — Gestão para Autônomos</title>
+    
+    <!-- Fontes Premium -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --accent: #22d3ee;
+            --bg: #0b0e14;
+            --card: #161b22;
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --success: #10b981;
+            --error: #ef4444;
+            --radius-lg: 24px;
+            --radius-md: 12px;
+            --safe-bottom: env(safe-area-inset-bottom);
+        }
 
-<title>Notas$fácil — Nota de Serviço para Autônomos</title>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#00C896">
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            user-select: none;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+        /* --- UI COMPONENTS --- */
+        .btn {
+            padding: 16px 24px; border-radius: var(--radius-md); border: none; font-family: inherit;
+            font-weight: 700; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-primary { 
+            background: linear-gradient(135deg, var(--primary), #a855f7); 
+            color: white; box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.5);
+        }
+        .btn-primary:active { transform: scale(0.95); opacity: 0.9; }
+        
+        .btn-ghost { background: rgba(255,255,255,0.03); color: var(--text); border: 1px solid var(--border); }
 
-<style>
-:root{
---verde:#00C896;
---preto:#0D1117;
---cinza:#8899AA;
---radius:14px;
-}
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 20px; }
 
-body{
-margin:0;
-font-family:'Sora',sans-serif;
-background:var(--preto);
-color:white;
-}
+        input, select, textarea {
+            width: 100%; background: #05070a; border: 1px solid var(--border);
+            border-radius: 12px; padding: 14px; color: #fff; font-size: 16px; outline: none;
+        }
+        input:focus { border-color: var(--primary); }
 
-nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:16px;
-background:#0d1117;
-border-bottom:1px solid rgba(255,255,255,0.05);
-}
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; height: 72px; background: rgba(11, 14, 20, 0.8);
+            backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 24px; z-index: 1000;
+        }
+        .logo { font-weight: 800; font-size: 22px; letter-spacing: -1px; background: linear-gradient(to right, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-.logo{
-font-weight:700;
-color:var(--verde);
-}
+        /* Bottom Nav Mobile */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0; height: calc(70px + var(--safe-bottom));
+            background: rgba(22, 27, 34, 0.95); backdrop-filter: blur(15px);
+            border-top: 1px solid var(--border); display: none; 
+            grid-template-columns: repeat(4, 1fr); padding-bottom: var(--safe-bottom); z-index: 1000;
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-dim); text-decoration: none; font-size: 10px; font-weight: 600; }
+        .nav-item.active { color: var(--accent); }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; font-style: normal; }
 
-.btn-primary{
-background:var(--verde);
-border:none;
-padding:10px 18px;
-border-radius:8px;
-font-weight:600;
-cursor:pointer;
-}
+        /* Sidebar Desktop */
+        .app-layout { display: flex; min-height: 100vh; padding-top: 72px; }
+        .sidebar {
+            width: 280px; background: var(--bg); border-right: 1px solid var(--border);
+            padding: 24px; position: fixed; height: calc(100vh - 72px); display: flex; flex-direction: column; gap: 8px;
+        }
+        .main-content { flex: 1; margin-left: 280px; padding: 40px; }
 
-.hero{
-padding:120px 20px 60px;
-text-align:center;
-max-width:900px;
-margin:auto;
-}
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 20px; padding-bottom: 100px; }
+            .bottom-nav { display: grid; }
+            .nav-actions { display: none; }
+        }
 
-.hero h1{
-font-size:42px;
-margin-bottom:20px;
-}
+        /* --- PAGES --- */
+        .page { display: none; animation: fadeIn 0.3s ease-out; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.hero p{
-color:var(--cinza);
-max-width:600px;
-margin:auto;
-}
+        /* --- AUTH / LOCK --- */
+        .auth-container { max-width: 400px; margin: 80px auto; text-align: center; padding: 20px; }
+        .pin-input { font-size: 32px; letter-spacing: 12px; text-align: center; font-family: 'JetBrains Mono'; margin: 24px 0; border: none; border-bottom: 2px solid var(--primary); background: transparent; width: 100%; color: #fff; }
 
-.btn-hero{
-margin-top:30px;
-padding:16px 28px;
-font-size:16px;
-border:none;
-border-radius:var(--radius);
-background:var(--verde);
-cursor:pointer;
-font-weight:700;
-}
+        /* --- HELP CENTER --- */
+        .help-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 20px; border-radius: 16px; margin-bottom: 12px; }
+        .help-card h4 { color: var(--accent); margin-bottom: 8px; font-size: 16px; }
+        .help-card p { font-size: 14px; color: var(--text-dim); }
 
-.section{
-padding:80px 20px;
-max-width:1000px;
-margin:auto;
-}
-
-.mobile-nav{
-display:none;
-}
-
-@media(max-width:768px){
-.mobile-nav{
-display:flex;
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:#111;
-border-top:1px solid rgba(255,255,255,0.08);
-justify-content:space-around;
-padding:8px 0;
-z-index:999;
-}
-
-.mobile-nav button{
-background:none;
-border:none;
-color:white;
-font-size:22px;
-}
-
-body{
-padding-bottom:70px;
-}
-}
-</style>
+        /* --- TOAST --- */
+        #toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 12px 24px; border-radius: 50px; font-weight: 800; display: none; z-index: 5000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    </style>
 </head>
-
 <body>
 
 <nav>
-<div class="logo">Notas$fácil</div>
-<button class="btn-primary" data-action="abrir-app">
-🔐 Acessar Minhas Notas
-</button>
+    <div class="logo">notas$fácil</div>
+    <div class="nav-actions">
+        <button class="btn btn-ghost" data-action="go-home">Início</button>
+        <button class="btn btn-primary" data-action="enter-app">Testar Grátis</button>
+    </div>
 </nav>
 
-<div class="hero">
-<h1>Sua nota de serviço em segundos.</h1>
-<p>Emita notas profissionais, calcule impostos automaticamente e organize suas finanças.</p>
-
-<button class="btn-hero" data-action="abrir-app">
-🚀 Criar minha primeira nota grátis
-</button>
-
-<p style="margin-top:16px;color:var(--cinza);font-size:14px">
-✅ Mais de 1.000 notas já emitidas por autônomos
-</p>
+<!-- LANDING PAGE -->
+<div id="page-landing" class="page active">
+    <div style="padding: 100px 24px 60px; text-align: center; max-width: 800px; margin: 0 auto;">
+        <span style="background: rgba(99, 102, 241, 0.1); color: var(--primary-light); padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 800; margin-bottom: 24px; display: inline-block;">
+            ✦ NOVO: GESTÃO FINANCEIRA PARA MEI & AUTÔNOMOS
+        </span>
+        <h1 style="font-size: clamp(40px, 10vw, 64px); font-weight: 800; line-height: 1.1; margin-bottom: 24px; letter-spacing: -2px;">
+            Sua nota de serviço em <span style="color: var(--primary);">segundos.</span>
+        </h1>
+        <p style="color: var(--text-dim); font-size: 18px; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Emita PDFs profissionais, controle seus ganhos e organize impostos sem complicações.
+        </p>
+        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+            <button class="btn btn-primary" style="padding: 18px 40px; font-size: 18px;" data-action="enter-app">Iniciar Teste de 2 Dias →</button>
+            <button class="btn btn-ghost" style="padding: 18px 40px; font-size: 18px;" data-action="go-help">Como funciona?</button>
+        </div>
+        <p style="margin-top: 24px; font-size: 13px; color: var(--text-dim);">Cancele a qualquer momento • R$ 15,99/mês após o teste.</p>
+    </div>
 </div>
 
-<!-- APP ROOT -->
-<div id="app"></div>
-
-<!-- Mobile Navigation -->
-<div class="mobile-nav">
-<button data-action="view" data-view="emitir">🧾</button>
-<button data-action="view" data-view="historico">📋</button>
-<button data-action="view" data-view="financas">📊</button>
-<button data-action="view" data-view="perfil">👤</button>
+<!-- AUTH / PIN SCREEN -->
+<div id="page-auth" class="page">
+    <div class="auth-container">
+        <div style="font-size: 48px; margin-bottom: 16px;">🛡️</div>
+        <h2 id="auth-title">Configurar Acesso</h2>
+        <p style="color: var(--text-dim); font-size: 14px;">Crie um PIN de 6 dígitos para proteger seus dados neste dispositivo.</p>
+        <input type="password" id="auth-pin" class="pin-input" maxlength="6" inputmode="numeric" placeholder="******">
+        <button class="btn btn-primary" style="width: 100%;" id="btn-auth-confirm">Ativar Acesso Seguro</button>
+    </div>
 </div>
 
-<script src="js/config.js"></script>
-<script src="js/crypto.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/trial.js"></script>
-<script src="js/app.js"></script>
-<script src="js/drive.js"></script>
-<script src="js/events.js"></script>
+<!-- APP LAYOUT -->
+<div id="page-app" class="page">
+    <div class="app-layout">
+        <aside class="sidebar">
+            <button class="btn btn-primary" style="width: 100%; margin-bottom: 20px;" data-view="emitir">✚ Nova Nota</button>
+            <button class="btn btn-ghost" style="width: 100%; justify-content: flex-start;" data-view="historico">📋 Histórico</button>
+            <button class="btn btn-ghost" style="width: 100%; justify-content: flex-start;" data-view="financas">📊 Finanças</button>
+            <button class="btn btn-ghost" style="width: 100%; justify-content: flex-start;" data-view="instrucoes">💡 Central de Ajuda</button>
+            <div style="flex: 1;"></div>
+            <button class="btn btn-ghost" style="width: 100%;" data-view="perfil">👤 Perfil</button>
+            <button class="btn btn-ghost" style="width: 100%; color: var(--error);" data-action="lock-app">Bloquear</button>
+        </aside>
+
+        <main class="main-content">
+            <!-- VIEW: EMITIR -->
+            <div id="view-emitir" class="app-view">
+                <h2 style="margin-bottom: 24px;">Emitir Nota</h2>
+                <div class="card">
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 12px; font-weight: 800; color: var(--text-dim); margin-bottom: 8px;">NOME DO CLIENTE</label>
+                        <input type="text" id="n_cliente" placeholder="Ex: Empresa de Tecnologia Ltda">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                        <div class="form-group">
+                            <label style="display: block; font-size: 12px; font-weight: 800; color: var(--text-dim); margin-bottom: 8px;">VALOR (R$)</label>
+                            <input type="number" id="n_valor" placeholder="0,00">
+                        </div>
+                        <div class="form-group">
+                            <label style="display: block; font-size: 12px; font-weight: 800; color: var(--text-dim); margin-bottom: 8px;">DATA</label>
+                            <input type="date" id="n_data">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label style="display: block; font-size: 12px; font-weight: 800; color: var(--text-dim); margin-bottom: 8px;">SERVIÇO PRESTADO</label>
+                        <textarea id="n_desc" rows="4" placeholder="Descreva brevemente o serviço..."></textarea>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 24px;" data-action="generate-pdf">Gerar PDF e Salvar</button>
+                </div>
+            </div>
+
+            <!-- VIEW: INSTRUÇÕES / AJUDA -->
+            <div id="view-instrucoes" class="app-view" style="display:none">
+                <h2 style="margin-bottom: 8px;">Central de Ajuda</h2>
+                <p style="color: var(--text-dim); margin-bottom: 24px;">Tudo o que você precisa saber sobre o app.</p>
+                
+                <div class="help-card">
+                    <h4>Como funciona o período de teste?</h4>
+                    <p>Você tem 48 horas de acesso total. Após esse prazo, o acesso às funções de emissão será bloqueado até que a assinatura de R$ 15,99 seja identificada.</p>
+                </div>
+                <div class="help-card">
+                    <h4>Meus dados estão seguros?</h4>
+                    <p>Sim. O Notas$fácil usa criptografia local. Suas notas e clientes só podem ser lidos se você digitar o PIN correto. Nós não temos acesso ao seu PIN.</p>
+                </div>
+                <div class="help-card">
+                    <h4>Como exportar minhas notas?</h4>
+                    <p>No menu "Histórico", você verá todas as notas emitidas. Você pode baixá-las novamente em PDF ou conectar seu Google Drive para backup automático.</p>
+                </div>
+                <div class="help-card">
+                    <h4>Configuração de Impostos</h4>
+                    <p>No seu "Perfil", você define se é MEI ou Autônomo. O sistema calculará automaticamente o ISS e IRRF (se houver) com base no valor digitado.</p>
+                </div>
+            </div>
+
+            <!-- PLACEHOLDERS OUTRAS VIEWS -->
+            <div id="view-historico" class="app-view" style="display:none"><h2>Histórico</h2><p style="color:var(--text-dim)">Nenhuma nota emitida ainda.</p></div>
+            <div id="view-financas" class="app-view" style="display:none"><h2>Finanças</h2><p style="color:var(--text-dim)">Seus gráficos aparecerão aqui.</p></div>
+            <div id="view-perfil" class="app-view" style="display:none"><h2>Meu Perfil</h2></div>
+        </main>
+    </div>
+
+    <!-- BOTTOM NAV (MOBILE) -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active" data-view="emitir"><i>✚</i><span>Emitir</span></a>
+        <a href="#" class="nav-item" data-view="historico"><i>📋</i><span>Notas</span></a>
+        <a href="#" class="nav-item" data-view="financas"><i>📊</i><span>Ganhos</span></a>
+        <a href="#" class="nav-item" data-view="instrucoes"><i>💡</i><span>Ajuda</span></a>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- BIBLIOTECAS EXTERNAS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
-if ('serviceWorker' in navigator) {
-navigator.serviceWorker.register('sw.js');
-}
+    /**
+     * NOTAS$FÁCIL - CORE LOGIC
+     */
+    const App = (() => {
+        const $ = id => document.getElementById(id);
+        
+        // Estado
+        let _isTrialActive = true;
+        let _isUnlocked = false;
+
+        const showToast = (msg) => {
+            const t = $('toast'); t.textContent = msg; t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
+        };
+
+        const switchPage = (pageId) => {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            $(pageId).classList.add('active');
+            window.scrollTo(0,0);
+        };
+
+        const switchView = (viewId) => {
+            document.querySelectorAll('.app-view').forEach(v => v.style.display = 'none');
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            
+            const target = $('view-' + viewId);
+            if(target) target.style.display = 'block';
+            
+            const navItem = document.querySelector(`.nav-item[data-view="${viewId}"]`);
+            if(navItem) navItem.classList.add('active');
+        };
+
+        const initEvents = () => {
+            document.addEventListener('click', (e) => {
+                const action = e.target.closest('[data-action]')?.dataset.action;
+                const view = e.target.closest('[data-view]')?.dataset.view;
+
+                if(view) switchView(view);
+
+                switch(action) {
+                    case 'go-home': switchPage('page-landing'); break;
+                    case 'go-help': switchPage('page-app'); switchView('instrucoes'); break;
+                    case 'enter-app': 
+                        const hasVault = localStorage.getItem('nf_vault_ready');
+                        $('auth-title').textContent = hasVault ? "Entrar no App" : "Configurar Acesso";
+                        switchPage('page-auth'); 
+                        break;
+                    case 'lock-app': _isUnlocked = false; switchPage('page-auth'); break;
+                    case 'generate-pdf': handleGenerate(); break;
+                }
+            });
+
+            $('btn-auth-confirm').onclick = () => {
+                const pin = $('auth-pin').value;
+                if(pin.length === 6) {
+                    localStorage.setItem('nf_vault_ready', 'true');
+                    _isUnlocked = true;
+                    showToast("Cofre Desbloqueado");
+                    switchPage('page-app');
+                    checkTrialStatus(); // Aqui conectaria com sua lógica de Redis/n8n
+                } else {
+                    showToast("PIN deve ter 6 dígitos");
+                }
+            };
+        };
+
+        // Simulação de consulta ao servidor (Redis/Trial)
+        const checkTrialStatus = async () => {
+            console.log("Consultando status do trial via API...");
+            // Exemplo de integração:
+            // const resp = await fetch('https://seu-servidor.com/check-access?email=user@test.com');
+            // const data = await resp.json();
+            // if(data.access === 'bloqueado') { ... mostrar modal pagamento ... }
+        };
+
+        const handleGenerate = () => {
+            const cliente = $('n_cliente').value;
+            const valor = $('n_valor').value;
+            if(!cliente || !valor) return showToast("Preencha cliente e valor");
+
+            showToast("Gerando PDF profissional...");
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(22); doc.setTextColor(99, 102, 241);
+            doc.text("notas$facil", 20, 20);
+            doc.setFontSize(10); doc.setTextColor(150);
+            doc.text("RECIBO DE PRESTACAO DE SERVICO", 20, 28);
+            
+            doc.setTextColor(0); doc.setFontSize(12);
+            doc.text(`Cliente: ${cliente}`, 20, 45);
+            doc.text(`Valor: R$ ${valor}`, 20, 55);
+            doc.text(`Data: ${$('n_data').value}`, 20, 65);
+            doc.text("Descricao:", 20, 75);
+            doc.text(doc.splitTextToSize($('n_desc').value, 160), 20, 82);
+            
+            doc.save(`nota_${Date.now()}.pdf`);
+        };
+
+        return { init: initEvents };
+    })();
+
+    document.addEventListener('DOMContentLoaded', App.init);
 </script>
 
 </body>
